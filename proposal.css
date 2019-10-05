@@ -1,0 +1,47 @@
+body {
+    background-color: #D8DEE3;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+header {
+    position: static;
+    top: 0;
+    left: 0;
+    background-color: #303333;
+    color: #ffffff;
+    min-height: 80px;
+    margin: 0;
+    padding: 10px;
+}
+
+h1 {
+    font-style: normal;
+}
+
+main {
+    padding: 2%;
+}
+
+section {
+    background-color: #ffffff;
+    padding: 20px;
+    line-height: 1.5;
+}
+
+#problem, #application {
+    width: 45%;
+    border-radius: 5px;
+    box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.2), 0 1px 10px 0 rgba(0, 0, 0, 0.19);
+}
+
+#problem {
+    float: left;
+}
+
+#application {
+    float: right;
+}
+
+.link {
+    font-style: italic;
+}
