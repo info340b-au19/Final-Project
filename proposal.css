@@ -28,7 +28,7 @@ section {
     line-height: 1.5;
 }
 
-#problem, #application {
+#problem, #application, #info {
     width: 45%;
     border-radius: 5px;
     box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.2), 0 1px 10px 0 rgba(0, 0, 0, 0.19);
@@ -44,4 +44,11 @@ section {
 
 .link {
     font-style: italic;
+}
+
+#info {
+    float: left;
+    margin-top: 20px;
+    text-align: center;
+    font-size: 1.5em;
 }
