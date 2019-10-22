@@ -9,9 +9,26 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
-    <nav>
-
-    </nav>
+    <header>
+        <nav>
+            <div class="navtab">
+                <a href="#">Home</a>
+            </div>
+            <div class="navtab">
+                <a href="#">Create</a>
+            </div>
+            <div class="navtab" id="selectedtab">
+                <a href="#">Explore</a>
+            </div>
+            <div class="navtab">
+                <a href="#">Apply</a>
+            </div>
+            <div class="navtab" id="account">
+                <a href="#">My Account</a>
+            </div>
+            
+        </nav>
+    </header>
     <main>
         <section id="searchcontainer">
             <input name="searchbox" type="text" placeholder="Type color or username">
@@ -46,8 +63,8 @@
             </div>
             <div class="palette">
                 <div class="setinfo">
-                    <p>author</p>
-                    <p>date</p>
+                    <p class="author">author</p>
+                    <p class="date">date</p>
                 </div>
                 <div class="colorcontainer">
                     <div class="color color5"></div>
@@ -83,10 +100,45 @@
                     <div class="color color3"></div>
                 </div>
             </div>
+            <div class="palette">
+                    <div class="setinfo">
+                        <p>author</p>
+                        <p>date</p>
+                    </div>
+                    <div class="colorcontainer">
+                        <div class="color color3"></div>
+                        <div class="color color4"></div>
+                        <div class="color color1"></div>
+                        <div class="color color5"></div>
+                        <div class="color color2"></div>
+                    </div>
+                </div>
         </section>
     </main>
     <footer>
-        <div id="selectedcolors">
+        <div id="coloroption">
+            <div class="optioncontainer">
+                <p class="hex">ff6f61</p>
+                <button class="lock"><i class="fa fa-lock locked"></i></button>
+            </div>
+            <div class="optioncontainer">
+                <p class="hex">4a4843</p>
+                <button class="lock"><i class="fa fa-lock"></i></button>
+            </div>
+            <div class="optioncontainer">
+                <p class="hex">9c98a3</p>
+                <button class="lock"><i class="fa fa-lock"></i></button>
+            </div>
+            <div class="optioncontainer">
+                <p class="hex">ffffff</p>
+                <button class="lock"><i class="fa fa-lock"></i></button>
+            </div>
+            <div class="optioncontainer">
+                <p class="hex">91918c</p>
+                <button class="lock"><i class="fa fa-lock"></i></button>
+            </div>
+        </div>
+        <div id="selectedpalette">
             <div class="color color1"></div>
             <div class="color color2"></div>
             <div class="color color3"></div>
