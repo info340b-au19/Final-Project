@@ -44,6 +44,10 @@ nav {
     display: none;
 }
 
+address > a {
+    color: inherit;
+}
+
 .navtab > a {
     font-size: 1rem;
     color: #ffffff;
@@ -122,19 +126,18 @@ h2 {
     display: flex;
 }
 
+.color {
+    height: 100%;
+    width: 20%;
+    margin: 0;
+}
+
 .colorcontainer .color:first-child {
     border-bottom-left-radius: 10px;
 }
 
 .colorcontainer .color:last-child {
     border-bottom-right-radius: 10px;
-}
-
-
-.color {
-    height: 100%;
-    width: 20%;
-    margin: 0;
 }
 
 .color1 {
@@ -294,10 +297,6 @@ address {
     font-style: normal;
 }
 
-address > a {
-    color: inherit;
-}
-
 @media (min-width: 600px) {
     #hamburger-menu {
         display: none;
@@ -356,14 +355,11 @@ address > a {
         width: auto;
         float: right;
         margin-right: 10%;
+        font-size: 1.3rem;
     }
 
     .coloroption {
         height: 50px;
-    }
-
-    .lock {
-        font-size: 1.3rem;
     }
 
     .searchinput {
