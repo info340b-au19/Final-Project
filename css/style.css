@@ -1,9 +1,7 @@
-html,body {
-    height:100%;
-}
+
 
 body {
-    background-color: #bebbb8;
+    background-color: #ff6f61;
     color: #4a4843;
     margin: 0;
     padding: 0;
@@ -11,25 +9,45 @@ body {
 }
 
 header {
-    position: fixed;
-    top: 0;
-    background-color: #232326;
     width: 100%;
     margin: 0 auto;
+}
+
+h1 {
+    color: #ff6f61;
+    padding-left: .5rem;
+    margin: 0;
+    font-weight: 700;
+    background-color: #ffffff;
+}
+
+nav {
+    position: sticky;
+    position: -webkit-sticky;
+    top: 0;
+    background-color: #232326;
+    margin: 0 auto;
     box-shadow: 0 8px 6px -6px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+}
+
+#hamburger-menu {
+    font-size: 2rem;
+    margin-left: 0.5em;
+}
+
+.fa-bars {
+    color: #ffffff
 }
 
 .navtab {
-    display: inline-block;
-    padding: .75em;
-    height: 100%;
+    display: none;
 }
 
 .navtab > a {
-    font-size: 1.3em;
+    font-size: 1rem;
     color: #ffffff;
     text-decoration: none;
-    margin: 0 .75em;
 }
 
 #account {
@@ -42,8 +60,6 @@ header {
 
 main {
     background-color: #ffffff;
-    height: 100%;
-    padding-top: 50px;
 }
 
 #uppercontainer {
@@ -53,10 +69,10 @@ main {
     padding-bottom: 2em;
 }
 
-h1 {
+h2 {
     margin: auto;
     text-align: center;
-    font-size: 4rem;
+    font-size: 2rem;
     padding-top: 1em;
     color: #ff6f61;
     text-shadow: 1px 1px 2px #232326;
@@ -65,7 +81,7 @@ h1 {
 }
 
 #searchcontainer {
-    width: 50%;
+    width: 75%;
     padding: 20px;
     margin: 2em auto;
 }
@@ -73,13 +89,13 @@ h1 {
 #cardcontainer {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
+    justify-content: center;
     margin: 0 1em;
-    padding: 1.5em 3em;
+    padding: 1.5em 1em 5em 1em;
 }
 
 .palette {
-    width: 300px;
+    width: 200px;
     margin: 1em;
     border-radius: 10px;
     background-color: #232326;
@@ -102,7 +118,7 @@ h1 {
 
 .colorcontainer {
     width: 100%;
-    height: 100px;
+    height: 50px;
     display: flex;
 }
 
@@ -161,25 +177,23 @@ h1 {
     background-color: #98DDDE;
 }
 
-footer {
+#selectedpanel {
     position: fixed;
-    left: 15%;
+    /* left: 15%; */
+    left: 0;
     bottom: 0;
-    width: 70%;
+    width: 100%;
     height: 100px;
     padding-top: 1em;
     border-top-left-radius: 15px;
     border-top-right-radius: 15px;
-    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
-    border-top: 8px solid #ff6f61;
-    border-left: 8px solid #ff6f61;
-    border-right: 8px solid #ff6f61;
+    box-shadow: 0 3px 3px 0 rgba(0, 0, 0, 0.14), 0 4px 2px -3px rgba(0, 0, 0, 0.2), 0 2px 6px 0 rgba(0, 0, 0, 0.12);
     background-color: #232326;
     transform: translateY(70%);
     transition-duration: .5s;
 }
 
-footer:hover {
+#selectedpanel:hover {
     transform: translateY(0);
     transition-duration: .5s;
 }
@@ -187,13 +201,12 @@ footer:hover {
 #selectedpalette {
     margin: 0 auto;
     display: flex;
-    height: 40px;
-    width: 70%;
+    height: 45px;
+    width: 80%;
 }
 
 #coloroption {
-    height: 50px;
-    width: 70%;
+    width: 80%;
     margin: 0 auto;
     display: flex;
     border-bottom: 1px solid #ffffff;
@@ -203,62 +216,158 @@ footer:hover {
 .optioncontainer {
     display: inline-block;
     width: 20%;
-    padding: 10px;
 }
 
 .hex {
+    display: none;
     float: left;
-    font-size: 1.5rem;
+    font-size: 1.3rem;
     margin: 0;
+    margin-left: 10%;
     text-transform: uppercase;
     color: #ffffff;
     line-height: 2rem;
 }
 
 .lock {
-    font-size: 1.5rem;
+    font-size: 1rem;
     border: none;
     background-color: #232326;
     color: #818181;
-    margin: .17em 0 0 .5em;
+    width: 100%;
+    margin-bottom: 1em;
+}
+
+.lock:hover {
+    cursor: pointer;
 }
 
 .locked {
     color: #ffffff;
 }
 
-.search {
+.searchbox {
     width: 100%;
     position: relative;
     display: flex;
-  }
-  
-  .searchTerm {
+}
+
+.searchinput {
     width: 100%;
-    border: 3px solid #ff6f61;
-    background-color: transparent;
-    border-right: none;
-    padding: 5px;
     height: 30px;
+    padding: 5px;
     border-radius: 15px 0 0 15px;
     outline: none;
     color: #ff6f61;
-    font-size: 1.25rem;
-    padding-left: 1em;
-  }
-  
-  .searchTerm:focus{
+    font-size: .75rem;
+    border-right: none;
+    border: 3px solid #ff6f61;
+    background-color: #ffffff;
+}
+
+.searchinput:focus{
     color: #ff6f61;
-  }
-  
-  .searchButton {
+}
+
+.searchbutton {
     width: 55px;
-    height: 46px;
-    border: 1px solid #ff6f61;
-    background: #ff6f61;
+    height: 45px;
     text-align: center;
     color: #fff;
-    border-radius: 0 15px 15px 0;
     cursor: pointer;
     font-size: 1.5rem;
-  }
+    border-radius: 0 15px 15px 0;
+    border: 1px solid #ff6f61;
+    background: #ff6f61;
+}
+
+footer {
+    height: 100px;
+    color: #ffffff;
+    margin: 0;
+    padding-top: 2em;
+    text-align: center;
+    font-size: .75rem;
+}
+
+address {
+    font-style: normal;
+}
+
+address > a {
+    color: inherit;
+}
+
+@media (min-width: 600px) {
+    #hamburger-menu {
+        display: none;
+    }
+
+    .navtab {
+        display: inline-block;
+        padding: .75em;
+        height: 100%;
+    }
+}
+
+@media (min-width: 900px) {
+    .lock {
+        font-size: 1.5rem;
+    }
+
+    #searchcontainer {
+        width: 50%;
+    }
+
+    .searchTerm {
+        font-size: 1rem;
+        padding-left: 1em;
+    }
+
+    #selectedpanel {
+        left: 15%;
+        width: 70%;
+    }
+
+    h2 {
+        font-size: 4rem;
+    }
+
+    footer {
+        height: 120px;
+        padding-top: 60px;
+    }
+}
+
+@media (min-width: 1200px) {
+    .palette {
+        width: 300px;
+    }
+    
+    .colorcontainer {
+        height: 100px;
+    }
+
+    .hex {
+        display: block;
+    }
+
+    .lock {
+        width: auto;
+        float: right;
+        margin-right: 10%;
+    }
+
+    .coloroption {
+        height: 50px;
+    }
+
+    .lock {
+        font-size: 1.3rem;
+    }
+
+    .searchinput {
+        padding-left: 1em;
+        font-size: 1.3rem;
+    }
+}
