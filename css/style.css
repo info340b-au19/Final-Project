@@ -15,9 +15,11 @@ header {
 
 h1 {
     color: #ff6f61;
-    padding-left: .5rem;
+    padding-left: .5em;
     margin: 0;
     font-weight: 700;
+    font-size: 1.5rem;
+    padding-bottom: 5px;
     background-color: #ffffff;
 }
 
@@ -328,6 +330,10 @@ address {
         width: 70%;
     }
 
+    h1 {
+        font-size: 2.5rem;
+    }
+
     h2 {
         font-size: 4rem;
     }
@@ -341,6 +347,10 @@ address {
 @media (min-width: 1200px) {
     .palette {
         width: 300px;
+    }
+
+    .navtab > a{
+        font-size: 1.2rem;
     }
     
     .colorcontainer {
