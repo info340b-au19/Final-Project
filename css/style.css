@@ -13,8 +13,11 @@ header {
     margin: 0 auto;
 }
 
-h1 {
+h1, h2 {
     color: #ff6f61;
+}
+
+h1 {
     padding-left: .5em;
     margin: 0;
     font-weight: 700;
@@ -80,7 +83,6 @@ h2 {
     text-align: center;
     font-size: 2rem;
     padding-top: 1em;
-    color: #ff6f61;
     text-shadow: 1px 1px 2px #232326;
     /* transform: translateY();
     transition-duration: .5s; */
