@@ -1,5 +1,4 @@
-d3.csv("resources/palettes.csv")
+d3.csv("./resources/palettes.csv")
 .then(function(data) {
     console.log(data);
-    
 });
