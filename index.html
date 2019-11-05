@@ -18,23 +18,14 @@
         <h1>acryline</h1>
     </header>
     <nav>
-        <div class="navtab">
-            <a href="#">Home</a>
-        </div>
-        <div class="navtab">
-            <a href="#">Create</a>
-        </div>
-        <div class="navtab" id="selectedtab">
-            <a href="#">Explore</a>
-        </div>
-        <div class="navtab">
-            <a href="#">Apply</a>
-        </div>
-        <div class="navtab" id="account">
-            <a href="#">My Account</a>
-        </div>
+        <a href="#">Home</a>
+        <a href="#">Create</a>
+        <a href="#" id="selectedtab">Explore</a>
+        <a href="#">Apply</a>
+        <a href="#" id="account">My Account</a>
         <div id="hamburger-menu"><a href="#"><i class="fa fa-bars" aria-label="menu"></i></a></div>
     </nav>
+
     <main>
         <section id="uppercontainer">
             <h2>Explore Other Creations</h2>
@@ -45,8 +36,11 @@
                         <i class="fa fa-search" aria-hidden="true"></i>
                     </button>
                 </form>
+                <div id="filterContainer">
+                </div>
             </div>
         </section>
+        <p id="nPalettes"></p>
         <section id="cardcontainer">
             <!-- cards example:
             <div class="palette" aria-label="color palette" tabindex="0">
@@ -63,6 +57,7 @@
             </div> -->
         </section>
     </main>
+
     <div id="selectedpanel">
         <div id="coloroption">
             <div class="optioncontainer">
