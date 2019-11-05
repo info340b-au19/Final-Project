@@ -1,15 +1,23 @@
+:root {
+    --lightShade: #ffffff;
+    --lightAccent: #818181;
+    --mainColor: #ff6f61;
+    --darkAccent: #836e58;
+    --darkShade: #232326;
+}
+
+
 body, h1, .filter > p, .color, .hex, .lock, footer {
     margin: 0;
 }
 
 body {
-    background-color: #ff6f61;
-    color: #4a4843;
+    background-color: var(--mainColor);
     padding: 0;
     font-family: 'Oxygen', sans-serif;
 }
 
-header, .colorcontainer, #selectedpanel, .lock, .searchbox, .searchinput {
+header, .colorcontainer, #selectedpanel, .lock, .searchbox, #searchinput {
     width: 100%;
 }
 
@@ -17,11 +25,11 @@ header, nav, #selectedpalette, #coloroption {
     margin: 0 auto;
 }
 
-h1, h2, .searchinput {
-    color: #ff6f61;
+h1, h2, #searchinput {
+    color: var(--mainColor);
 }
 
-h1, main, .filter, .searchinput {
+h1, main, .filter, #searchinput {
     background-color: #ffffff;
 }
 
@@ -68,7 +76,7 @@ address > a {
 }
 
 #selectedtab {
-    background-color: #ff6f61;
+    background-color: var(--mainColor);
 }
 
 #uppercontainer {
@@ -124,6 +132,7 @@ h2 {
     align-items: center;
     border-radius: 20px;
     font-size: 1rem;
+    text-transform: capitalize;
     padding: .5em .75em;
     margin: .2em;
     color: #232326;
@@ -147,6 +156,19 @@ h2 {
     justify-content: center;
     margin: 0 1em;
     padding: .5em 1em 5em 1em;
+}
+
+#error {
+    text-align: center;
+    color: #ffffff;
+    background-color: #818181;
+    border-radius: 10px;
+    width: 80%;
+    margin: 0.5em auto;
+    padding: .5em;
+    font-weight: 700;
+    font-size: 1.2rem;
+    display: none;
 }
 
 #nPalettes {
@@ -255,21 +277,21 @@ h2 {
     position: relative;
 }
 
-.searchinput {
+#searchinput {
     height: 30px;
     padding: 5px;
     border-radius: 15px 0 0 15px;
     outline: none;
     font-size: 1rem;
     border-right: none;
-    border: 3px solid #ff6f61;
+    border: 3px solid var(--mainColor);
 }
 
-.searchinput:focus{
-    color: #ff6f61;
+#searchinput:focus{
+    color: var(--mainColor);
 }
 
-.searchbutton {
+#searchbutton {
     width: 55px;
     height: 46px;
     text-align: center;
@@ -277,8 +299,8 @@ h2 {
     cursor: pointer;
     font-size: 1.5rem;
     border-radius: 0 15px 15px 0;
-    border: 1px solid #ff6f61;
-    background: #ff6f61;
+    border: 1px solid var(--mainColor);
+    background: var(--mainColor);
 }
 
 footer {
@@ -365,7 +387,7 @@ address {
         height: 50px;
     }
 
-    .searchinput {
+    #searchinput {
         padding-left: 1em;
         font-size: 1.3rem;
     }
