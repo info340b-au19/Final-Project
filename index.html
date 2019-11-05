@@ -42,24 +42,25 @@
                 <form class="searchbox" action="">
                     <input type="text" class="searchinput" placeholder="Search..." aria-label="search input">
                     <button type="submit" class="searchbutton">
-                        <i class="fa fa-search"></i>
+                        <i class="fa fa-search" aria-hidden="true"></i>
                     </button>
                 </form>
             </div>
         </section>
         <section id="cardcontainer">
+            <!-- cards example:
             <div class="palette" aria-label="color palette" tabindex="0">
                 <div class="setinfo">
                     <p class="author">Created by fadesquad</p>
                 </div>
                 <div class="colorcontainer">
-                    <div class="color color1"></div>
-                    <div class="color color2"></div>
-                    <div class="color color3"></div>
-                    <div class="color color4"></div>
-                    <div class="color color5"></div>
+                    <div class="color"></div> - with first color
+                    <div class="color"></div> - with second color
+                    <div class="color"></div> - with third color
+                    <div class="color"></div> - with forth color
+                    <div class="color"></div> - with sixth color
                 </div>
-            </div>
+            </div> -->
             <div class="palette" aria-label="color palette" tabindex="0">
                 <div class="setinfo">
                     <p class="author">Created by randomdesigner</p>
@@ -280,5 +281,15 @@
         <address>Contact: <a href="mailto:ghcho@uw.edu">ghcho@uw.edu</a> 
             |  <a href="mailto:jz73@uw.edu">jz73@uw.edu</a></address>
     </footer>
+
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fetch/2.0.4/fetch.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/es6-promise/4.1.1/es6-promise.auto.min.js"></script>
+    <script src="https://d3js.org/d3-fetch.v1.min.js"></script>
+    <!-- loads jquery -->
+    <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.4.1.min.js"></script>
+
+    <!-- loads javascript -->
+    <script src="js/index.js"></script>
 </body>
 </html>
