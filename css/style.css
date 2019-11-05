@@ -38,7 +38,7 @@ nav, .palette, #selectedpanel, .lock {
 
 nav {
     position: sticky;
-    position: -webkit-sticky;
+    position: sticky;
     top: 0;
     box-shadow: 0 8px 6px -6px rgba(0, 0, 0, 0.2);
     z-index: 1;
@@ -49,7 +49,7 @@ nav {
     margin-left: 0.5em;
 }
 
-.fa-bars, nav > a, .author, .hex, .locked, footer {
+.fa-bars, nav > a, .author, .hex, footer {
     color: #ffffff;
 }
 
@@ -102,13 +102,30 @@ h2 {
     flex-wrap: wrap;
     justify-content: flex-start;
     margin-top: .5em;
+    min-height: 3em;
 }
+
+.filter:hover {
+    cursor: pointer;
+    animation-name: wiggle;
+    animation-duration: 500ms;
+}
+
+@keyframes wiggle {
+    0% { transform: rotate(0deg); }
+    20% { transform: rotate(-5deg); }
+    40% { transform: rotate(0deg); }
+    60% { transform: rotate(5deg); }
+    80% { transform: rotate(0deg); }
+    100% { transform: rotate(-5deg); }
+ }
 
 .filter {
     align-items: center;
     border-radius: 20px;
     font-size: 1rem;
     padding: .5em .75em;
+    margin: .2em;
     color: #232326;
     box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.2), 0 1px 3px 0 rgba(0, 0, 0, 0.12);
 }
@@ -230,6 +247,10 @@ h2 {
     cursor: pointer;
 }
 
+.locked {
+    color: #ffffff;
+}
+
 .searchbox {
     position: relative;
 }
@@ -347,5 +368,15 @@ address {
     .searchinput {
         padding-left: 1em;
         font-size: 1.3rem;
+    }
+}
+
+@media (min-width: 1500px) {
+    .hex {
+        font-size: 1.5rem;
+    }
+
+    .lock {
+        font-size: 1.5rem;
     }
 }
