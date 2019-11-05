@@ -22,17 +22,17 @@ const EXAMPLE_PALETTES = [{
         color5: "#384451"}
 ];
 
-var x;
+// var palettes;
 
-d3.csv("./resources/palettes.csv")
-.then(function(data) {
-    console.log(data);
-    x = data;
-});
-
+// d3.csv("./resources/palettes.csv")
+// .then(function(data) {
+//     console.log(data);
+//     palettes = data;
+// });
 
 const STATE = {
-    selectedColor: ["#f2f7f7", "#f68e4a", "#675485", "#46b2ed", "#384451"]
+    selectedColor: ["#f2f7f7", "#f68e4a", "#675485", "#46b2ed", "#384451"],
+    filter: []
 };
 
 function hexToRGB(hex) {
@@ -43,7 +43,6 @@ function hexToRGB(hex) {
     b: parseInt(result[3], 16)
   } : null;
 }
-
 
 function rgbToHex(r, g, b) {
     return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
@@ -58,7 +57,16 @@ function toggleSelectedColor() {
     }
 }
 
-function showSelected() {
-    colorHex = document.getElementsByClassName("hex");
-    
+// update the selected palette panel
+function updateSelected() {
+    hexContainers = document.getElementsByClassName("hex");
+    let colorId = "";
+    for (let i = 0; i < 5; i++) {
+        hexContainers[i].innerHTML = STATE.selectedColor[i];
+        colorId = "color" + (i + 1);
+        document.getElementById(colorId).style.backgroundColor = STATE.selectedColor[i];
+    }
+    toggleSelectedColor();
 }
+
+updateSelected();
