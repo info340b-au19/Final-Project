@@ -1,3 +1,4 @@
+//mock up data
 const EXAMPLE_PALETTES = [{
         username: "SAMPLE",
         color1: "#eff0ef",
@@ -21,6 +22,15 @@ const EXAMPLE_PALETTES = [{
         color5: "#384451"}
 ];
 
+var x;
+
+d3.csv("./resources/palettes.csv")
+.then(function(data) {
+    console.log(data);
+    x = data;
+});
+
+
 const STATE = {
     selectedColor: ["#f2f7f7", "#f68e4a", "#675485", "#46b2ed", "#384451"]
 };
@@ -33,6 +43,7 @@ function hexToRGB(hex) {
     b: parseInt(result[3], 16)
   } : null;
 }
+
 
 function rgbToHex(r, g, b) {
     return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
@@ -49,5 +60,5 @@ function toggleSelectedColor() {
 
 function showSelected() {
     colorHex = document.getElementsByClassName("hex");
-    for (let i = 0; )
+    
 }
