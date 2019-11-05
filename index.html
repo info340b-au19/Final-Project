@@ -36,8 +36,7 @@
                         <i class="fa fa-search" aria-hidden="true"></i>
                     </button>
                 </form>
-                <div id="filterContainer">
-                </div>
+                <div id="filterContainer"></div>
             </div>
         </section>
         <p id="nPalettes"></p>
@@ -62,23 +61,23 @@
         <div id="coloroption">
             <div class="optioncontainer">
                 <p class="hex"></p>
-                <button class="lock" aria-label="color lock"><i class="fa fa-lock"></i></button>
+                <button class="lock" id="lock1" aria-label="color lock"><i class="fa fa-lock"></i></button>
             </div>
             <div class="optioncontainer">
                 <p class="hex"></p>
-                <button class="lock" aria-label="color lock"><i class="fa fa-lock"></i></button>
+                <button class="lock" id="lock2" aria-label="color lock"><i class="fa fa-lock"></i></button>
             </div>
             <div class="optioncontainer">
                 <p class="hex"></p>
-                <button class="lock" aria-label="color lock"><i class="fa fa-lock"></i></button>
+                <button class="lock" id="lock3" aria-label="color lock"><i class="fa fa-lock"></i></button>
             </div>
             <div class="optioncontainer">
                 <p class="hex"></p>
-                <button class="lock" aria-label="color lock"><i class="fa fa-lock"></i></button>
+                <button class="lock" id="lock4" aria-label="color lock"><i class="fa fa-lock"></i></button>
             </div>
             <div class="optioncontainer">
                 <p class="hex"></p>
-                <button class="lock" aria-label="color lock"><i class="fa fa-lock"></i></button>
+                <button class="lock" id="lock5" aria-label="color lock"><i class="fa fa-lock"></i></button>
             </div>
         </div>
         <div id="selectedpalette" aria-label="selected palette">
@@ -101,8 +100,12 @@
     
     <!-- loads d3-fetch -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/5.12.0/d3.js"></script>
+    
     <!-- loads jquery -->
     <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.4.1.min.js"></script>
+
+    <!-- loads NtC for converting color codes to human-readable color names -->
+    <script type="text/javascript" src="http://chir.ag/projects/ntc/ntc.js"></script>
 
     <!-- loads javascript -->
     <script src="js/index.js"></script>
