@@ -164,27 +164,8 @@ h2 {
     background-color: #91918c;
 }
 
-.color6 {
-    background-color: #184A45;
-}
-
-.color7 {
-    background-color: #9A9738;
-}
-
-.color8 {
-    background-color: #009499;
-}
-
-.color9 {
-    background-color: #FFDA29;
-}
-
-.color10 {
-    background-color: #98DDDE;
-}
-
 #selectedpanel {
+    display: none;
     position: fixed;
     /* left: 15%; */
     left: 0;
