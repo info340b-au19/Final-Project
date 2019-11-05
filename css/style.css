@@ -30,7 +30,7 @@ h1, h2, #searchinput {
 }
 
 h1, main, .filter, #searchinput {
-    background-color: #ffffff;
+    background-color: var(--lightShade);
 }
 
 h1 {
@@ -40,8 +40,8 @@ h1 {
     padding-bottom: 5px;
 }
 
-nav, .palette, #selectedpanel, .lock {
-    background-color: #232326;
+nav, #selectedpanel, .lock {
+    background-color: var(--darkShade);
 }
 
 nav {
@@ -58,7 +58,7 @@ nav {
 }
 
 .fa-bars, nav > a, .author, .hex, footer {
-    color: #ffffff;
+    color: var(--lightShade);
 }
 
 nav > a {
@@ -75,7 +75,7 @@ address > a {
     float: right;
 }
 
-#selectedtab {
+.selectedtab {
     background-color: var(--mainColor);
 }
 
@@ -135,12 +135,12 @@ h2 {
     text-transform: capitalize;
     padding: .5em .75em;
     margin: .2em;
-    color: #232326;
+    color: var(--darkShade);
     box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.2), 0 1px 3px 0 rgba(0, 0, 0, 0.12);
 }
 
-.fa-times, #nPalettes, .lock{
-    color: #818181;
+.fa-times, #nPalettes {
+    color: var(--lightAccent);
 }
 
 .fa-times {
@@ -160,8 +160,8 @@ h2 {
 
 #error {
     text-align: center;
-    color: #ffffff;
-    background-color: #818181;
+    color: var(--lightShade);
+    background-color: var(--lightAccent);
     border-radius: 10px;
     width: 80%;
     margin: 0.5em auto;
@@ -174,13 +174,14 @@ h2 {
 #nPalettes {
     width: 95%;
     text-align: right;
-    border-bottom: 1px solid #818181;
+    border-bottom: 1px solid var(--lightAccent);
     font-size: .75em;
     margin: 0.5em auto;
     padding: .5em;
 }
 
 .palette {
+    background-color: var(--darkAccent);
     width: 200px;
     margin: 1em;
     border-radius: 10px;
@@ -244,7 +245,7 @@ h2 {
 
 #coloroption {
     width: 80%;
-    border-bottom: 1px solid #ffffff;
+    border-bottom: 1px solid var(--lightShade);
     margin-bottom: 10px;
 }
 
@@ -261,6 +262,8 @@ h2 {
 }
 
 .lock {
+    color: var(--lightShade);
+    opacity: 0.3;
     font-size: 2rem;
     border: none;
 }
@@ -270,7 +273,7 @@ h2 {
 }
 
 .locked {
-    color: #ffffff;
+    opacity: 1;
 }
 
 .searchbox {
