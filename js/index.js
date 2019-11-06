@@ -1,19 +1,41 @@
+// current state of the web app
 const STATE = {
-    selectedColor: [], // currently selected palette
+    selectedColor: [], // hex codes for currently selected palette
+    selectedColorNames: [], // color names for currently selected palette
     filter: [], // filters for search result. if '!' is the at the front, consider it as username, otherwise it is color name
     lockState: [false, false, false, false, false] // wheter or not the lock buttons are activated
 };
 
-var palettes;
-function aLaLa() {
-d3.csv('../resources/palettes.csv')
-.then(function(data) {
-    console.log(data);
-    palettes = data;
-})
-};
+// USE "ntc.name(hexcode)[1]"" TO CONVERT HEX CODE INTO CLOSEST READABLE NAME
 
-aLaLa();
+// palettes - user generated sets of palettes
+// fields: username, lightShade, lightAccent, main, darkAccent, darkAhade
+var palettes = {username: [], lightShade: [], lightAccent: [], main: [], darkAccent: [], darkShade: []}; 
+
+d3.csv('./resources/palettes.csv')
+.then(function(data) {
+    data.forEach(function(d) {
+        palettes.username.push(d.username);
+        palettes.lightShade.push(d.light_shade);
+        palettes.lightAccent.push(d.light_accent);
+        palettes.main.push(d.main);
+        palettes.darkAccent.push(d.dark_accent);
+        palettes.darkShade.push(d.dark_shade);
+    });
+});
+
+// colorNames - hex code and the name associated with it
+// fields: hex, name
+// sorted by name
+var colorNames = {hex: [], name: []};
+
+d3.csv('./resources/color_names.csv')
+.then(function(data) {
+    data.forEach(function(d) {
+        colorNames.hex.push(d.hex);
+        colorNames.name.push(d.color_name);
+    });
+});
 
 function hexToRGB(hex) {
   var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
@@ -39,14 +61,24 @@ function updateSelected() {
         colorId = '#color' + (i + 1);
         lockId = '#lock' + (i + 1);
         $(colorId).css('background-color', STATE.selectedColor[i]);
+        STATE.selectedColorNames[i] = ntc.name(STATE.selectedColor[i])[1].toLowerCase();
     }
     if ($('#selectedpanel').css('display') == 'none') {
         $('#selectedpanel').css('display', 'block');
     }
 }
 
-function checkDuplicateFilter(filter) {
-    return (STATE.filter.indexOf(filter) == -1);
+function hasDuplicateFilter(filter) {
+    return (STATE.filter.indexOf(filter) > -1);
+}
+
+// checks if the given filter is user or a color
+// returns back the given filter if it is color, adds '!' in front of filter if it is user
+function userOrColor(filter) {
+    if (!colorNames.name.includes(filter)) {
+        return '!' + filter;
+    }
+    return filter;
 }
 
 function removeFilter(filter) {
@@ -62,21 +94,26 @@ function addFilter(filter, lockId) {
 
     let filterBubble = $('<div>');
     filterBubble.addClass('filter');
+    filterBubble.attr('aria-label', 'delete filter');
     if (lockId != 0) {
         filterBubble.attr('id', 'filterForLock' + lockId);
     }
 
     let xIcon = $('<i>');
     xIcon.addClass('fa fa-times');
+    xIcon.attr('aria-hidden', 'true');
+
     let filterText = $('<p>');
-
-    //change hex code input to color name
-    if (filter.charAt(0) == '#') {
-        filter = ntc.name(filter)[1];
-    }
-
-    STATE.filter.push(filter);
     filterText.html(filter);
+
+    filter = userOrColor(filter);
+    if (filter.charAt(0) == '!') {
+        filterBubble.attr('data-type', 'user');
+    } else {
+        filterBubble.attr('data-type', 'color');
+    }
+    STATE.filter.push(filter);
+
     filterBubble.append(xIcon);
     filterBubble.append(filterText);
 
@@ -94,6 +131,7 @@ function addFilter(filter, lockId) {
     console.log(STATE.filter);
 }
 
+// adds funtionality to lock buttons
 for (let i = 0; i < 5; i++) {
     let lockId = '#lock' + (i + 1);
     $(lockId).click(function (event) {
@@ -102,16 +140,52 @@ for (let i = 0; i < 5; i++) {
         if (STATE.lockState[i]) {
             removeFilter(STATE.selectedColor[i]);
             STATE.lockState[i] = false;
-            $('.filter:contains(' + ntc.name(STATE.selectedColor[i])[1] + ')').remove();
+            $('.filter:contains(' + STATE.selectedColorNames[i] + ')').remove();
             console.log(STATE.filter);
         } else {
-            addFilter(ntc.name(STATE.selectedColor[i])[1], i + 1);
+            addFilter(STATE.selectedColorNames[i], i + 1);
             STATE.lockState[i] = true;
             console.log(STATE.filter);
         }
         $(this).toggleClass('locked');
     });
 }
+
+// adds functionality to search box
+$('#searchbutton').click(function (event) {
+    event.preventDefault();
+    let inputText = $('#searchinput').val().toLowerCase();
+    let id = 0;
+    
+    if (!hasDuplicateFilter(inputText)) {
+        if (STATE.selectedColorNames.includes(inputText)) {
+            id = STATE.selectedColorNames.indexOf(inputText);
+            STATE.lockState[id] = true;
+            id++;
+            
+            $('#lock' + id).addClass('locked');
+        }
+        addFilter(inputText, id);
+    } else {
+        $('#error').html('Already Filtered!');
+        $('#error').show();
+        $('#error').fadeOut(8000);
+    }
+});
+
+//adds functionality to apply tab
+//when clicked, overhauls the website's color with the selected palette
+$('#apply').click(function (event) {
+    event.preventDefault();
+    
+    if (STATE.selectedColor.length != 0) {
+        let root = document.documentElement;
+        let colors = ['--lightShade', '--lightAccent', '--mainColor', '--darkAccent', '--darkShade'];
+        for (let i = 0; i < colors.length; i++) {
+            root.style.setProperty(colors[i], STATE.selectedColor[i]);
+        }
+    }
+});
 
 STATE.selectedColor = ['#eff0ef', '#75736c', '#5c8a94', '#736b73', '#242a2b'];
 
