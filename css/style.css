@@ -52,19 +52,22 @@ nav {
     z-index: 1;
 }
 
-#hamburger-menu {
+.hamburger-menu {
     font-size: 2.5rem;
     margin-left: 0.5em;
 }
 
-.fa-bars, nav > a, .author, .hex, footer {
+.fa-bars, .navigate, .author, .hex, footer {
     color: var(--lightShade);
 }
 
-nav > a {
+a {
+    text-decoration: none;
+}
+
+.navigate {
     display: none;
     font-size: 1.2rem;
-    text-decoration: none;
 }
 
 address > a {
@@ -84,6 +87,30 @@ address > a {
     background-size: cover;
     background-attachment: fixed;
     padding-bottom: 2em;
+}
+
+aside {
+    display: none;
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    background-color: var(--darkShade);
+    z-index: 1;
+    top: 0;
+    left: 0;
+    padding-top: 2.25rem;
+}
+
+aside > a {
+    display: block;
+    padding: 1em .8em;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--lightShade);
+}
+
+.navigate:hover {
+    background-color: var(--mainColor);
 }
 
 h2 {
@@ -131,11 +158,12 @@ h2 {
 .filter {
     align-items: center;
     border-radius: 20px;
-    font-size: 1rem;
+    font-size: .8rem;
+    font-weight: 700;
     text-transform: capitalize;
     padding: .5em .75em;
     margin: .2em;
-    color: var(--darkShade);
+    color: var(--darkAccent);
     box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.2), 0 1px 3px 0 rgba(0, 0, 0, 0.12);
 }
 
@@ -154,8 +182,8 @@ h2 {
 #cardcontainer {
     flex-wrap: wrap;
     justify-content: center;
-    margin: 0 1em;
-    padding: .5em 1em 5em 1em;
+    margin: 0;
+    padding: .5em 0em 5em 0em;
 }
 
 #error {
@@ -225,11 +253,11 @@ h2 {
     left: 0;
     bottom: 0;
     height: 100px;
-    padding-top: 1em;
+    padding-top: .5em;
     border-top-left-radius: 15px;
     border-top-right-radius: 15px;
     box-shadow: 0 3px 3px 0 rgba(0, 0, 0, 0.14), 0 4px 2px -3px rgba(0, 0, 0, 0.2), 0 2px 6px 0 rgba(0, 0, 0, 0.12);
-    transform: translateY(70%);
+    transform: translateY(45%);
     transition-duration: .5s;
 }
 
@@ -245,8 +273,8 @@ h2 {
 
 #coloroption {
     width: 80%;
-    border-bottom: 1px solid var(--lightShade);
-    margin-bottom: 10px;
+    border-top: 1px solid var(--lightShade);
+    margin-top: 10px;
 }
 
 .optioncontainer {
@@ -298,7 +326,7 @@ h2 {
     width: 55px;
     height: 46px;
     text-align: center;
-    color: #fff;
+    color: var(--lightShade);
     cursor: pointer;
     font-size: 1.5rem;
     border-radius: 0 15px 15px 0;
@@ -318,14 +346,19 @@ address {
 }
 
 @media (min-width: 600px) {
-    #hamburger-menu {
+    nav > .hamburger-menu {
         display: none;
     }
 
-    nav > a {
+    .navigate {
         display: inline-block;
         padding: .75em;
         height: 100%;
+    }
+
+    #cardcontainer {
+        margin: 0 1em;
+        padding: .5em 1em 5em 1em;
     }
 }
 
@@ -367,7 +400,7 @@ address {
         width: 300px;
     }
 
-    nav > a{
+    .navigate{
         font-size: 1rem;
     }
     
