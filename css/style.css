@@ -158,6 +158,78 @@ h2 {
     padding: .5em 1em 5em 1em;
 }
 
+/*delete if any thing crashes*/
+#tutorial_container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin: 0 1em;
+    padding: 1.5em 3em;
+}
+
+#tutorial_container {
+    flex-direction: column;
+}
+
+.create, .explore, .apply {
+    padding:10px 0;
+    position: relative;
+    border-bottom: 1px solid #e8edf2;
+    overflow: hidden;
+    width: 100%;
+    padding-top: 7px;
+}
+
+.pic_holder_1, .pic_holder_2, .pic_holder_3 {
+    height: 100%;
+    width: 30%;
+    position: absolute;    
+}
+
+.pic_holder_2 {
+    left: 0;
+}
+
+.pic_holder_1, .pic_holder_3 {
+    right: 0;
+}
+
+.desc, .desc_right {
+    float: left;
+    justify-content: center;
+    text-align: center;
+    padding: 3em;
+}
+
+.desc_right {
+    float: right;
+}
+
+#uppercontainer_front {
+    background-image: url("../img/front.jpg");
+    padding-bottom: 9em;
+}
+
+#tutorial_container img {
+    opacity: 0.7;
+}
+
+h4 {
+    position: absolute;
+    bottom: 0;
+    color: #91918c;
+    padding-left: 52px;
+}
+
+h4.desc_right {
+    right: 0;
+}
+
+h4.desc {
+    left: 0;
+}
+/*delete if any thing crashes*/
+
 #error {
     text-align: center;
     color: var(--lightShade);
