@@ -37,18 +37,18 @@ if (mq.matches) {
     $('aside').hide();
 }
 
-function hexToRGB(hex) {
-  var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-  return result ? {
-    r: parseInt(result[1], 16),
-    g: parseInt(result[2], 16),
-    b: parseInt(result[3], 16)
-  } : null;
-}
+// function hexToRGB(hex) {
+//   var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+//   return result ? {
+//     r: parseInt(result[1], 16),
+//     g: parseInt(result[2], 16),
+//     b: parseInt(result[3], 16)
+//   } : null;
+// }
 
-function rgbToHex(r, g, b) {
-    return '#' + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
-}
+// function rgbToHex(r, g, b) {
+//     return '#' + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
+// }
 
 // update the selected palette panel
 function updateSelected() {
@@ -56,10 +56,8 @@ function updateSelected() {
         $(this).html(STATE.selectedColor[index]);
     });
     let colorId;
-    let lockId;
     for (let i = 0; i < 5; i++) {
         colorId = '#color' + (i + 1);
-        lockId = '#lock' + (i + 1);
         $(colorId).css('background-color', STATE.selectedColor[i]);
         STATE.selectedColorNames[i] = ntc.name(STATE.selectedColor[i])[1].toLowerCase();
     }
@@ -212,10 +210,10 @@ function displayPalettes(filteredSet) {
         filteredSet.forEach(function(d) {
             card = $('<div class="palette" aria-label="color palette">');
             
-            info = $('<div class="setinfo">');
+            let info = $('<div class="setinfo">');
             info.html('<p class="author">Created by ' + d.username + '</p>');
     
-            colorContainer = $('<div class="colorcontainer">');
+            let colorContainer = $('<div class="colorcontainer">');
             
             let colors = [];
             let names = [];
