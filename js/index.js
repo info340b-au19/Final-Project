@@ -10,18 +10,27 @@ const STATE = {
 
 // palettes - user generated sets of palettes
 // fields: username, lightShade, lightAccent, main, darkAccent, darkAhade
-var palettes = {username: [], lightShade: [], lightAccent: [], main: [], darkAccent: [], darkShade: []}; 
+// var palettes = {username: [], lightShade: [], lightAccent: [], main: [], darkAccent: [], darkShade: []}; 
+
+// d3.csv('./resources/palettes.csv')
+// .then(function(data) {
+//     data.forEach(function(d) {
+//         palettes.username.push(d.username);
+//         palettes.lightShade.push(d.light_shade);
+//         palettes.lightAccent.push(d.light_accent);
+//         palettes.main.push(d.main);
+//         palettes.darkAccent.push(d.dark_accent);
+//         palettes.darkShade.push(d.dark_shade);
+//     });
+//     displayPalettes(palettes);
+// });
+
+var palettes;
 
 d3.csv('./resources/palettes.csv')
 .then(function(data) {
-    data.forEach(function(d) {
-        palettes.username.push(d.username);
-        palettes.lightShade.push(d.light_shade);
-        palettes.lightAccent.push(d.light_accent);
-        palettes.main.push(d.main);
-        palettes.darkAccent.push(d.dark_accent);
-        palettes.darkShade.push(d.dark_shade);
-    });
+    palettes = data;
+    displayPalettes(palettes);
 });
 
 // colorNames - hex code and the name associated with it
@@ -36,6 +45,11 @@ d3.csv('./resources/color_names.csv')
         colorNames.name.push(d.color_name);
     });
 });
+
+var mq = window.matchMedia( "(min-width: 600px)" );
+if (mq.matches) {
+    $('aside').hide();
+}
 
 function hexToRGB(hex) {
   var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
@@ -54,7 +68,7 @@ function rgbToHex(r, g, b) {
 function updateSelected() {
     $('.hex').each(function (index) {
         $(this).html(STATE.selectedColor[index]);
-    })
+    });
     let colorId;
     let lockId;
     for (let i = 0; i < 5; i++) {
@@ -64,7 +78,7 @@ function updateSelected() {
         STATE.selectedColorNames[i] = ntc.name(STATE.selectedColor[i])[1].toLowerCase();
     }
     if ($('#selectedpanel').css('display') == 'none') {
-        $('#selectedpanel').css('display', 'block');
+        $('#selectedpanel').show();
     }
 }
 
@@ -85,6 +99,8 @@ function removeFilter(filter) {
     let i;
     i = STATE.filter.indexOf(filter);
     STATE.filter.splice(i, 1);
+
+    applyFilter();
 }
 
 function addFilter(filter, lockId) {
@@ -92,16 +108,14 @@ function addFilter(filter, lockId) {
     // lockId is the integer id(1~5) of lock button that is related to this filter
     // if lockId is 0, the filter is not associated with a lock
 
-    let filterBubble = $('<div>');
-    filterBubble.addClass('filter');
-    filterBubble.attr('aria-label', 'delete filter');
+    filter = filter.toLowerCase();
+
+    let filterBubble = $('<div class="filter" aria-label="delete filter">');
     if (lockId != 0) {
         filterBubble.attr('id', 'filterForLock' + lockId);
     }
 
-    let xIcon = $('<i>');
-    xIcon.addClass('fa fa-times');
-    xIcon.attr('aria-hidden', 'true');
+    let xIcon = $('<i class="fa fa-times" aria-hidden="true">');
 
     let filterText = $('<p>');
     filterText.html(filter);
@@ -123,12 +137,10 @@ function addFilter(filter, lockId) {
             $('#lock' + lockId).removeClass('locked');
             STATE.lockState[(lockId - 1)] = false;
         }
-        console.log(STATE.filter);
         this.remove();
     });
-
     $('#filterContainer').append(filterBubble);
-    console.log(STATE.filter);
+    applyFilter();
 }
 
 // adds funtionality to lock buttons
@@ -156,7 +168,12 @@ $('#searchbutton').click(function (event) {
     event.preventDefault();
     let inputText = $('#searchinput').val().toLowerCase();
     let id = 0;
-    
+    $('#searchinput').val('');
+
+    if (/^#....../.test(inputText)) {
+        inputText = ntc.name(inputText)[1];
+    }
+
     if (!hasDuplicateFilter(inputText)) {
         if (STATE.selectedColorNames.includes(inputText)) {
             id = STATE.selectedColorNames.indexOf(inputText);
@@ -175,18 +192,99 @@ $('#searchbutton').click(function (event) {
 
 //adds functionality to apply tab
 //when clicked, overhauls the website's color with the selected palette
-$('#apply').click(function (event) {
+$('.apply').click(function (event) {
     event.preventDefault();
+
+    let colors = ['--lightShade', '--lightAccent', '--mainColor', '--darkAccent', '--darkShade'];
     
     if (STATE.selectedColor.length != 0) {
         let root = document.documentElement;
-        let colors = ['--lightShade', '--lightAccent', '--mainColor', '--darkAccent', '--darkShade'];
-        for (let i = 0; i < colors.length; i++) {
+        for (let i = 0; i < 5; i++) {
             root.style.setProperty(colors[i], STATE.selectedColor[i]);
         }
     }
 });
 
-STATE.selectedColor = ['#eff0ef', '#75736c', '#5c8a94', '#736b73', '#242a2b'];
+$('#menu-unclicked').click(function (event) {
+    event.preventDefault();
+    $('aside').show();
+})
 
-updateSelected();
+$('#menu-clicked').click(function (event) {
+    event.preventDefault();
+    $('aside').hide();
+})
+
+function displayPalettes(filteredSet) {
+    $('#cardcontainer').empty();
+
+    if (!jQuery.isEmptyObject(filteredSet)) {
+        let fields = ['light_shade', 'light_accent', 'main', 'dark_accent', 'dark_shade'];
+        let currentColor;
+        let card;
+
+        filteredSet.forEach(function(d) {
+            card = $('<div class="palette" aria-label="color palette">');
+            
+            info = $('<div class="setinfo">');
+            info.html('<p class="author">Created by ' + d.username + '</p>');
+    
+            colorContainer = $('<div class="colorcontainer">');
+            
+            let colors = [];
+            let names = [];
+            for (let i = 0; i < 5; i++) {
+                currentColor = $('<div class="color">');
+                colors[i] = d[fields[i]];
+                
+                names[i] = ntc.name(colors[i])[1].toLowerCase();
+                currentColor.css('background-color', colors[i]);
+                colorContainer.append(currentColor);
+            }
+            
+
+            card.append(info);
+            card.append(colorContainer);
+
+            card.click(function() {
+                STATE.selectedColor = colors;
+                STATE.selectedColorNames = names;
+                updateSelected();
+            });
+
+            $('#cardcontainer').append(card);
+        });
+    }
+
+    $('#nPalettes').html(filteredSet.length + ' results found');
+}
+
+function usernameFilter(originalSet, filter) {
+	return originalSet.filter(function(d) {
+        return d.username.toLowerCase() === filter;
+    });
+}
+
+function colorFilter(originalSet, filter) {
+    return originalSet.filter(function(d) {
+        return (ntc.name(d.light_shade)[1].toLowerCase() === filter ||
+            ntc.name(d.light_accent)[1].toLowerCase() === filter ||
+            ntc.name(d.main)[1].toLowerCase() === filter ||
+            ntc.name(d.dark_accent)[1].toLowerCase() === filter ||
+            ntc.name(d.dark_shade)[1].toLowerCase() === filter);
+    });
+}
+
+function applyFilter() {
+    let colorSet = palettes;
+    for (let i = 0; i < STATE.filter.length; i++) {
+        console.log(STATE.filter[i].charAt(0) === '!');
+        if (STATE.filter[i].charAt(0) === '!') {
+            
+            colorSet = usernameFilter(colorSet, STATE.filter[i].substring(1, STATE.filter[i].length));
+        } else {
+            colorSet = colorFilter(colorSet, STATE.filter[i]);
+        }
+    }
+    displayPalettes(colorSet);
+}
