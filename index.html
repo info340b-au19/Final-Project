@@ -18,13 +18,20 @@
         <h1>acryline</h1>
     </header>
     <nav>
-        <a href="#" id="home">Home</a>
-        <a href="#" id="create">Create</a>
-        <a href="#" id="explore" class="selectedtab">Explore</a>
-        <a href="#" id="apply">Apply</a>
-        <a href="#" id="account">My Account</a>
-        <div id="hamburger-menu"><a href="#"><i class="fa fa-bars" aria-label="menu"></i></a></div>
+        <a href="#" class="home navigate">Home</a>
+        <a href="#" class="create navigate">Create</a>
+        <a href="#" class="explore selectedtab navigate">Explore</a>
+        <a href="#" class="apply navigate">Apply</a>
+        <div class="hamburger-menu"><a id="menu-unclicked" href="#"><i class="fa fa-bars" aria-label="menu"></i></a></div>
     </nav>
+
+    <aside>
+        <div class="hamburger-menu"><a id="menu-clicked" href="#"><i class="fa fa-bars" aria-label="menu"></i></a></div>
+        <a href="#" class="home navigate">Home</a>
+        <a href="#" class="create navigate">Create</a>
+        <a href="#" class="explore selectedtab navigate">Explore</a>
+        <a href="#" class="apply navigate">Apply</a>
+    </aside>
 
     <main>
         <section id="uppercontainer">
@@ -42,23 +49,17 @@
         <p id="error"></p>
         <p id="nPalettes"></p>
         <section id="cardcontainer">
-            <!-- cards example:
-            <div class="palette" aria-label="color palette" tabindex="0">
-                <div class="setinfo">
-                    <p class="author">Created by fadesquad</p>
-                </div>
-                <div class="colorcontainer">
-                    <div class="color"></div> - with first color
-                    <div class="color"></div> - with second color
-                    <div class="color"></div> - with third color
-                    <div class="color"></div> - with forth color
-                    <div class="color"></div> - with sixth color
-                </div>
-            </div> -->
         </section>
     </main>
 
     <div id="selectedpanel">
+        <div id="selectedpalette" aria-label="selected palette">
+            <div class="color" id="color1"></div>
+            <div class="color" id="color2"></div>
+            <div class="color" id="color3"></div>
+            <div class="color" id="color4"></div>
+            <div class="color" id="color5"></div>
+        </div>
         <div id="coloroption">
             <div class="optioncontainer">
                 <p class="hex"></p>
@@ -80,13 +81,6 @@
                 <p class="hex"></p>
                 <button class="lock" id="lock5" aria-label="color lock"><i class="fa fa-lock"></i></button>
             </div>
-        </div>
-        <div id="selectedpalette" aria-label="selected palette">
-            <div class="color" id="color1"></div>
-            <div class="color" id="color2"></div>
-            <div class="color" id="color3"></div>
-            <div class="color" id="color4"></div>
-            <div class="color" id="color5"></div>
         </div>
     </div>
     <footer>
