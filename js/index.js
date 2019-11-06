@@ -10,20 +10,6 @@ const STATE = {
 
 // palettes - user generated sets of palettes
 // fields: username, lightShade, lightAccent, main, darkAccent, darkAhade
-// var palettes = {username: [], lightShade: [], lightAccent: [], main: [], darkAccent: [], darkShade: []}; 
-
-// d3.csv('./resources/palettes.csv')
-// .then(function(data) {
-//     data.forEach(function(d) {
-//         palettes.username.push(d.username);
-//         palettes.lightShade.push(d.light_shade);
-//         palettes.lightAccent.push(d.light_accent);
-//         palettes.main.push(d.main);
-//         palettes.darkAccent.push(d.dark_accent);
-//         palettes.darkShade.push(d.dark_shade);
-//     });
-//     displayPalettes(palettes);
-// });
 
 var palettes;
 
