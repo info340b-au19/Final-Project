@@ -181,40 +181,6 @@ h2 {
 
 #cardcontainer {
     flex-wrap: wrap;
-    justify-content: space-between;
-    margin: 0 1em;
-    padding: 1.5em 3em;
-}
-
-#tutorial_container {
-    flex-direction: column;
-}
-
-.create, .explore, .apply {
-    padding:10px 0;
-    position: relative;
-    border-bottom: 1px solid #e8edf2;
-    overflow: hidden;
-    width: 100%;
-    padding-top: 7px;
-}
-
-.pic_holder_1, .pic_holder_2, .pic_holder_3 {
-    height: 100%;
-    width: 30%;
-    position: absolute;    
-}
-
-.pic_holder_2 {
-    left: 0;
-}
-
-.pic_holder_1, .pic_holder_3 {
-    right: 0;
-}
-
-.desc, .desc_right {
-    float: left;
     justify-content: center;
     margin: 0;
     padding: .5em 0em 5em 0em;
@@ -241,11 +207,6 @@ h2 {
     margin: 0.5em auto;
     padding: .5em;
 }
-
-h4.desc {
-    left: 0;
-}
-/*delete if any thing crashes*/
 
 .palette {
     background-color: var(--darkAccent);
