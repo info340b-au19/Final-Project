@@ -46,8 +46,8 @@
                 <div id="filterContainer"></div>
             </div>
         </section>
-        <p id="error"></p>
-        <p id="nPalettes"></p>
+        <p id="error" role="alert"></p>
+        <p id="nPalettes" aria-label="number of search results" aria-live="polite"></p>
         <section id="cardcontainer">
         </section>
     </main>
@@ -62,24 +62,34 @@
         </div>
         <div id="coloroption">
             <div class="optioncontainer">
-                <p class="hex"></p>
-                <button class="lock" id="lock1" aria-label="color lock"><i class="fa fa-lock"></i></button>
+                <p class="hex" aria-label="selected light shade code" aria-live="polite"></p>
+                <button class="lock" id="lock1" aria-label="color lock" aria-pressed="true">
+                    <i class="fa fa-lock"></i>
+                </button>
             </div>
             <div class="optioncontainer">
-                <p class="hex"></p>
-                <button class="lock" id="lock2" aria-label="color lock"><i class="fa fa-lock"></i></button>
+                <p class="hex" aria-label="seleccted light accent code" aria-live="polite"></p>
+                <button class="lock" id="lock2" aria-label="color lock" aria-pressed="true">
+                    <i class="fa fa-lock"></i>
+                </button>
             </div>
             <div class="optioncontainer">
-                <p class="hex"></p>
-                <button class="lock" id="lock3" aria-label="color lock"><i class="fa fa-lock"></i></button>
+                <p class="hex" aria-label="selected main color code" aria-live="polite"></p>
+                <button class="lock" id="lock3" aria-label="color lock" aria-pressed="true">
+                    <i class="fa fa-lock"></i>
+                </button>
             </div>
             <div class="optioncontainer">
-                <p class="hex"></p>
-                <button class="lock" id="lock4" aria-label="color lock"><i class="fa fa-lock"></i></button>
+                <p class="hex" aria-label="selected dark accent code" aria-live="polite"></p>
+                <button class="lock" id="lock4" aria-label="color lock" aria-pressed="true">
+                    <i class="fa fa-lock"></i>
+                </button>
             </div>
             <div class="optioncontainer">
-                <p class="hex"></p>
-                <button class="lock" id="lock5" aria-label="color lock"><i class="fa fa-lock"></i></button>
+                <p class="hex" aria-label="selected dark shade code" aria-live="polite"></p>
+                <button class="lock" id="lock5" aria-label="color lock" aria-pressed="true">
+                    <i class="fa fa-lock"></i>
+                </button>
             </div>
         </div>
     </div>
@@ -100,7 +110,7 @@
     <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.4.1.min.js"></script>
 
     <!-- loads NtC for converting color codes to human-readable color names -->
-    <script type="text/javascript" src="http://chir.ag/projects/ntc/ntc.js"></script>
+    <script src="http://chir.ag/projects/ntc/ntc.js"></script>
 
     <!-- loads javascript -->
     <script src="js/index.js"></script>
