@@ -198,7 +198,6 @@ $('#menu-clicked').click(function (event) {
     event.preventDefault();
     $('aside').hide();
 })
-<<<<<<< HEAD
 
 function displayPalettes(filteredSet) {
     $('#cardcontainer').empty();
@@ -237,46 +236,6 @@ function displayPalettes(filteredSet) {
                 updateSelected();
             });
 
-=======
-
-function displayPalettes(filteredSet) {
-    $('#cardcontainer').empty();
-
-    if (!jQuery.isEmptyObject(filteredSet)) {
-        let fields = ['light_shade', 'light_accent', 'main', 'dark_accent', 'dark_shade'];
-        let currentColor;
-        let card;
-
-        filteredSet.forEach(function(d) {
-            card = $('<div class="palette" aria-label="color palette">');
-            
-            let info = $('<div class="setinfo">');
-            info.html('<p class="author">Created by ' + d.username + '</p>');
-    
-            let colorContainer = $('<div class="colorcontainer">');
-            
-            let colors = [];
-            let names = [];
-            for (let i = 0; i < 5; i++) {
-                currentColor = $('<div class="color">');
-                colors[i] = d[fields[i]];
-                
-                names[i] = ntc.name(colors[i])[1].toLowerCase();
-                currentColor.css('background-color', colors[i]);
-                colorContainer.append(currentColor);
-            }
-            
-
-            card.append(info);
-            card.append(colorContainer);
-
-            card.click(function() {
-                STATE.selectedColor = colors;
-                STATE.selectedColorNames = names;
-                updateSelected();
-            });
-
->>>>>>> 79dda0610414a1ff75d2182346c8f0a85d2f04b9
             $('#cardcontainer').append(card);
         });
     }
@@ -312,8 +271,4 @@ function applyFilter() {
         }
     }
     displayPalettes(colorSet);
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> 79dda0610414a1ff75d2182346c8f0a85d2f04b9
