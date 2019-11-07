@@ -64,7 +64,7 @@ a {
     text-decoration: none;
 }
 
-.navigate {
+nav > .navigate {
     display: none;
     font-size: 1.2rem;
 }
@@ -100,7 +100,7 @@ aside {
     padding-top: 2.25rem;
 }
 
-aside > a {
+aside > .navigate {
     display: block;
     padding: 1em .8em;
     font-size: 1.5rem;
@@ -349,7 +349,7 @@ address {
         display: none;
     }
 
-    .navigate {
+    nav > .navigate {
         display: inline-block;
         padding: .75em;
         height: 100%;
@@ -399,7 +399,7 @@ address {
         width: 300px;
     }
 
-    .navigate{
+    nav > .navigate{
         font-size: 1rem;
     }
     
