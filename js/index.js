@@ -10,13 +10,15 @@ const STATE = {
 
 // palettes - user generated sets of palettes
 // fields: username, lightShade, lightAccent, main, darkAccent, darkAhade
-
 var palettes;
 
 d3.csv('./resources/palettes.csv')
 .then(function(data) {
     palettes = data;
     displayPalettes(palettes);
+})
+.catch(function (err) {
+    showError(err);
 });
 
 // colorNames - hex code and the name associated with it
@@ -30,25 +32,15 @@ d3.csv('./resources/color_names.csv')
         colorNames.hex.push(d.hex);
         colorNames.name.push(d.color_name);
     });
+})
+.catch(function (err) {
+    showError(err);
 });
 
 var mq = window.matchMedia( "(min-width: 600px)" );
 if (mq.matches) {
     $('aside').hide();
 }
-
-// function hexToRGB(hex) {
-//   var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-//   return result ? {
-//     r: parseInt(result[1], 16),
-//     g: parseInt(result[2], 16),
-//     b: parseInt(result[3], 16)
-//   } : null;
-// }
-
-// function rgbToHex(r, g, b) {
-//     return '#' + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
-// }
 
 // update the selected palette panel
 function updateSelected() {
@@ -94,7 +86,7 @@ function addFilter(filter, lockId) {
 
     filter = filter.toLowerCase();
 
-    let filterBubble = $('<div class="filter" aria-label="delete filter">');
+    let filterBubble = $('<div class="filter" aria-label="delete filter" role="button">');
     if (lockId != 0) {
         filterBubble.attr('id', 'filterForLock' + lockId);
     }
@@ -125,6 +117,12 @@ function addFilter(filter, lockId) {
     });
     $('#filterContainer').append(filterBubble);
     applyFilter();
+}
+
+function showError(err) {
+    $('#error').html(err.message);
+    $('#error').show();
+    $('#error').fadeOut(4000);
 }
 
 // adds funtionality to lock buttons
@@ -168,9 +166,7 @@ $('#searchbutton').click(function (event) {
         }
         addFilter(inputText, id);
     } else {
-        $('#error').html('Already Filtered!');
-        $('#error').show();
-        $('#error').fadeOut(8000);
+        showError(new Error('Already filtered!'));
     }
 });
 
@@ -179,12 +175,16 @@ $('#searchbutton').click(function (event) {
 $('.apply').click(function (event) {
     event.preventDefault();
 
-    let colors = ['--lightShade', '--lightAccent', '--mainColor', '--darkAccent', '--darkShade'];
-    
-    if (STATE.selectedColor.length != 0) {
-        let root = document.documentElement;
-        for (let i = 0; i < 5; i++) {
-            root.style.setProperty(colors[i], STATE.selectedColor[i]);
+    if (STATE.selectedColor.length == 0) {
+        showError(new Error('No palettes selected!'));
+    } else {
+        let colors = ['--lightShade', '--lightAccent', '--mainColor', '--darkAccent', '--darkShade'];
+        
+        if (STATE.selectedColor.length != 0) {
+            let root = document.documentElement;
+            for (let i = 0; i < 5; i++) {
+                root.style.setProperty(colors[i], STATE.selectedColor[i]);
+            }
         }
     }
 });
