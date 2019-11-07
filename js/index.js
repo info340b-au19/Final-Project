@@ -3,44 +3,38 @@ const STATE = {
     selectedColor: [], // hex codes for currently selected palette
     selectedColorNames: [], // color names for currently selected palette
     filter: [], // filters for search result. if '!' is the at the front, consider it as username, otherwise it is color name
-    lockState: [false, false, false, false, false] // wheter or not the lock buttons are activated
+    lockState: [false, false, false, false, false], // wheter or not the lock buttons are activated
+
+    palettes: {}, // user generated sets of palettes (fields: username, lightShade, lightAccent, main, darkAccent, darkAhade)
+    colorNames: {hex: [], name: []} // hex code and the name associated with it
 };
 
 // USE "ntc.name(hexcode)[1]"" TO CONVERT HEX CODE INTO CLOSEST READABLE NAME
 
 // palettes - user generated sets of palettes
 // fields: username, lightShade, lightAccent, main, darkAccent, darkAhade
-var palettes;
 
+// loads palettes.csv
 d3.csv('./resources/palettes.csv')
 .then(function(data) {
-    palettes = data;
-    displayPalettes(palettes);
+    STATE.palettes = data;
+    displayPalettes(STATE.palettes);
 })
 .catch(function (err) {
     showError(err);
 });
 
-// colorNames - hex code and the name associated with it
-// fields: hex, name
-// sorted by name
-var colorNames = {hex: [], name: []};
-
+// loads color_names.csv
 d3.csv('./resources/color_names.csv')
 .then(function(data) {
     data.forEach(function(d) {
-        colorNames.hex.push(d.hex);
-        colorNames.name.push(d.color_name);
+        STATE.colorNames.hex.push(d.hex);
+        STATE.colorNames.name.push(d.color_name);
     });
 })
 .catch(function (err) {
     showError(err);
 });
-
-var mq = window.matchMedia( "(min-width: 600px)" );
-if (mq.matches) {
-    $('aside').hide();
-}
 
 // update the selected palette panel
 function updateSelected() {
@@ -58,6 +52,7 @@ function updateSelected() {
     }
 }
 
+// checks if the given filter has duplicate in the list of filters
 function hasDuplicateFilter(filter) {
     return (STATE.filter.indexOf(filter) > -1);
 }
@@ -65,12 +60,13 @@ function hasDuplicateFilter(filter) {
 // checks if the given filter is user or a color
 // returns back the given filter if it is color, adds '!' in front of filter if it is user
 function userOrColor(filter) {
-    if (!colorNames.name.includes(filter)) {
+    if (!STATE.colorNames.name.includes(filter)) {
         return '!' + filter;
     }
     return filter;
 }
 
+// removes the given filter from the list of filters
 function removeFilter(filter) {
     let i;
     i = STATE.filter.indexOf(filter);
@@ -79,8 +75,8 @@ function removeFilter(filter) {
     applyFilter();
 }
 
+// create new filter and filter bubble.
 function addFilter(filter, lockId) {
-    // filter must be a string
     // lockId is the integer id(1~5) of lock button that is related to this filter
     // if lockId is 0, the filter is not associated with a lock
 
@@ -119,6 +115,7 @@ function addFilter(filter, lockId) {
     applyFilter();
 }
 
+// shows the error in the webpage
 function showError(err) {
     $('#error').html(err.message);
     $('#error').show();
@@ -152,7 +149,7 @@ $('#searchbutton').click(function (event) {
     let id = 0;
     $('#searchinput').val('');
 
-    if (/^#....../.test(inputText)) {
+    if (/^#....../.test(inputText)) { // if the given string is in hex code format, change it to readable name
         inputText = ntc.name(inputText)[1];
     }
 
@@ -199,6 +196,7 @@ $('#menu-clicked').click(function (event) {
     $('aside').hide();
 })
 
+// show the given list of palettes
 function displayPalettes(filteredSet) {
     $('#cardcontainer').empty();
 
@@ -243,12 +241,16 @@ function displayPalettes(filteredSet) {
     $('#nPalettes').html(filteredSet.length + ' results found');
 }
 
+// filters the given set of palettes with the given username filter
+// returns the filtered set
 function usernameFilter(originalSet, filter) {
 	return originalSet.filter(function(d) {
         return d.username.toLowerCase() === filter;
     });
 }
 
+// filters the given set of palettes with the given color name filter
+// returns the filtered set
 function colorFilter(originalSet, filter) {
     return originalSet.filter(function(d) {
         return (ntc.name(d.light_shade)[1].toLowerCase() === filter ||
@@ -259,8 +261,9 @@ function colorFilter(originalSet, filter) {
     });
 }
 
+// apply the filter to the list of palettes and show the result
 function applyFilter() {
-    let colorSet = palettes;
+    let colorSet = STATE.palettes;
     for (let i = 0; i < STATE.filter.length; i++) {
         console.log(STATE.filter[i].charAt(0) === '!');
         if (STATE.filter[i].charAt(0) === '!') {
