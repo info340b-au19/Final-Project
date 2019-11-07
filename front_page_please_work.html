@@ -16,15 +16,21 @@
     <body>
             <header>
                     <h1>acryline</h1>
-                </header>
+            </header>
                 <nav>
-                    <a href="#">Home</a>
-                    <a href="#">Create</a>
-                    <a href="#" id="selectedtab">Explore</a>
-                    <a href="#">Apply</a>
-                    <a href="#" id="account">My Account</a>
-                    <div id="hamburger-menu"><a href="#"><i class="fa fa-bars" aria-label="menu"></i></a></div>
+                    <a href="#" class="home navigate">Home</a>
+                    <a href="#" class="create navigate">Create</a>
+                    <a href="#" class="explore  navigate">Explore</a>
+                    <a href="#" class="apply navigate">Apply</a>
+                    <div class="hamburger-menu"><a id="menu-unclicked" href="#"><i class="fa fa-bars" aria-label="menu"></i></a></div>
                 </nav>
+                <aside>
+                        <div class="hamburger-menu"><a id="menu-clicked" href="#"><i class="fa fa-bars" aria-label="menu"></i></a></div>
+                        <a href="#" class="home navigate">Home</a>
+                        <a href="#" class="create navigate">Create</a>
+                        <a href="#" class="explore selectedtab navigate">Explore</a>
+                        <a href="#" class="apply navigate">Apply</a>
+                </aside>
        <!-- <header>
             <h1>acryline</h1>
              <nav>
@@ -46,7 +52,7 @@
                 <div id="hamburger-menu"><a href="#"><i class="fa fa-bars" aria-label="menu"></i></a></div>
             </nav>
         </header>-->
-        <main class="front_main">
+        <main>
             <section id="uppercontainer_front">
                 <h2 class="front_h2">Build Your Own Colors</h2>
             </section>
@@ -54,18 +60,14 @@
                 <div class="create">
                     <img class="pic_holder_1" src="img/create_2.svg">
                     <h3 class="desc">Use your imagination to create your own color set</h3>
-                    <h4 class="desc">with convinient online tool, artists can effectively build their ideas</h4>
                 </div>
-                <div class=explore>
+                <div class="explore">
                     <img class="pic_holder_2" src="img/com.jpg">
                     <h3 class="desc_right">Explore works of other artists</h3>
-                    <h4 class="desc_right">looking for works of other artists? we offer you the network</h4>
-
                 </div>
                 <div class="apply">
                     <img class="pic_holder_3" src="img/apply_2.svg">
                     <h3 class="desc">Apply your design to real life job</h3>
-                    <h4 class="desc">you can check how everyrthing works in real life with our help</h4>
                 </div>
 
             </section>
@@ -87,3 +89,4 @@
     <script src="js/index.js"></script>
     </body>
 </html>
+
