@@ -189,57 +189,6 @@ h2 {
     flex-direction: column;
 }
 
-/*delete if crashes*/
-
-.front_h2 {
-    padding-top: 2em;
-}
-
-.create, .explore, .apply, .home {
-    padding:10px 0;
-    position: relative;
-    border-bottom: 1px solid #e8edf2;
-    overflow: hidden;
-    width: 100%;
-}
-
-.pic_holder_1, .pic_holder_2, .pic_holder_3 {
-    height: 100%;
-    width: 30%;
-    position: absolute;    
-}
-
-.pic_holder_2 {
-    left: 0;
-}
-
-.pic_holder_1, .pic_holder_3 {
-    right: 0;
-}
-
-div h3.desc, div h4.desc, div h3.desc_right, div h4.desc_right {
-    float: left;
-    justify-content: center;
-    text-align: center;
-    padding: 3em;
-    position: relative;
-}
-
-div h3.desc_right, div h4.desc_right {
-    float: right;
-}
-
-#tutorial_container img {
-    opacity: 0.7;
-}
-
-#uppercontainer_front {
-    background-image: url("../img/front.jpg");
-    padding-bottom: 2em;
-}
-/*delete if crashes*/
-
-
 #error {
     text-align: center;
     color: var(--lightShade);
