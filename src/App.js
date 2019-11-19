@@ -4,8 +4,27 @@ import { faBars } from '@fortawesome/free-solid-svg-icons';
 import { faLock } from '@fortawesome/free-solid-svg-icons';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import './index.css';
+import * as d3 from 'd3';
+import palettesData from './palettes.csv';
+import colorNameData from './color_names.csv'
 
 export class App extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {palettes: [], colorNames: [], filteredPalettes: [], nFiltered: 0};
+    }
+
+    componentDidMount() {
+        d3.csv(colorNameData, (colorNameData) => {
+            this.setState({colorNames: colorNameData});
+        });
+        d3.csv(palettesData, (palettesData) => {
+            this.setState({palettes: palettesData});
+            this.setState({filteredPalettes: palettesData});
+            this.setState({nFiltered: palettesData.length})
+        });
+    }
+
     render() {
         return (
             <div>
@@ -17,9 +36,8 @@ export class App extends Component {
                 <main>
                     <UpperContainer />
                     <p id="error" role="alert"></p>
-                    <p id="nPalettes" aria-label="number of search results" aria-live="polite"></p>
-                    <section id="cardcontainer">
-                    </section>
+                    <NumberOfResult nResult={this.state.nFiltered} />
+                    <CardContainer filteredData={this.state.filteredPalettes} />
                 </main>
                 <SelectedPanel />
                 <Footer />
@@ -133,7 +151,6 @@ class OptionContainer extends Component {
     }
 }
 
-
 class Footer extends Component {
     render() {
         return (
@@ -144,5 +161,55 @@ class Footer extends Component {
             </footer>
         );
     }
+}
 
+class CardContainer extends Component {
+    render() {
+        let paletteCards = this.props.filteredData.map(x => <PaletteCard palette={x} />)
+
+        return (
+            <section id="cardcontainer">
+                {paletteCards}
+            </section>
+        );
+    }
+}
+
+class PaletteCard extends Component {
+    render() {
+        let colors = [this.props.palette.light_shade, this.props.palette.light_accent, this.props.palette.main, 
+            this.props.palette.dark_accent, this.props.palette.dark_shade];
+        
+        colors = colors.map(x => <PaletteCardColor color={x} />);
+
+        return (
+            <div className="palette" aria-label="color palette">
+                <div className="setinfo">
+                    <p className="author">{'Created by ' + this.props.palette.username}</p>
+                    <div className="colorcontainer">
+                        {colors}
+                    </div>
+                </div>
+            </div>
+        );
+    }
+}
+
+class PaletteCardColor extends Component {
+    render() {
+        let bgcolor = {backgroundColor: this.props.color};
+        return (
+            <div className="color" style={bgcolor}></div>
+        );
+    }
+}
+
+class NumberOfResult extends Component {
+    render() {
+        return (
+            <p id="nPalettes" aria-label="number of search results" aria-live="polite">
+                {this.props.nResult + ' results found'}
+            </p>
+        );
+    }
 }
