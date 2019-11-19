@@ -213,3 +213,90 @@ class NumberOfResult extends Component {
         );
     }
 }
+
+
+//abondoned//
+
+// import React, { Component } from 'react'; //import React Component
+
+// export class App extends React.Component {
+//     render() {
+//         return (
+//             // <head>
+//             //     <meta charset="utf-8" />
+//             //     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+//             //     <meta name="author" content="Gunhyung Cho, Jiuzhou Zhao" />
+//             //     <meta name="description" content="users can look for other people's shared palettes with search box and color lock feature" />
+//             //     <meta name="keywords" content="design, graphic, illustration, color" />
+//             //     <title>acryline</title>
+//             //     <link rel="stylesheet" href="css/style.css" />
+//             //     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+//             //     <link href="https://fonts.googleapis.com/css?family=Oxygen:400,700&amp;display=swap" rel="stylesheet" />
+//             // </head>
+//             <div className="container">
+//                 <Header />
+//                 <Body />
+//             </div>
+//         );
+//     }
+// }
+
+// class Header extends React.component {
+//     render() {
+//         return(
+//             <head>
+//                 <meta charset="utf-8" />
+//                 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+//                 <meta name="author" content="Gunhyung Cho, Jiuzhou Zhao" />
+//                 <meta name="description" content="users can look for other people's shared palettes with search box and color lock feature" />
+//                 <meta name="keywords" content="design, graphic, illustration, color" />
+//                 <title>acryline</title>
+//                 <link rel="stylesheet" href="css/style.css" />
+//                 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+//                 <link href="https://fonts.googleapis.com/css?family=Oxygen:400,700&amp;display=swap" rel="stylesheet" />
+//             </head> 
+//         );        
+//     }
+// }
+
+// class Body extends React.component {
+//     render() {
+//         return(
+//             <body>
+//                 <header>
+//                     <h1>acryline</h1>
+//                 </header>
+//                 <NAV />
+//                 <ASIDE />
+//                 <MAIN />
+//                 <SelectedPanel />
+//                 <footer>
+//                     <p>© 2019 Gunhyung Cho  |  Jiuzhou Zhao</p>
+//                     <address>Contact: <a href="mailto:ghcho@uw.edu">ghcho@uw.edu</a> 
+//             |       <a href="mailto:jz73@uw.edu">jz73@uw.edu</a></address>
+//                 </footer>
+//             </body>
+//         );
+//     }
+// }
+
+
+// class NAV extends React.component {
+//     render() {
+//         let classesAndText = this.props.classesAndText;
+//         let 
+//         return(
+
+//         );
+//     }
+// }
+
+// class NavOptions extends React.component {
+//     render() {
+//         let thisClass = this.props.thisClass;
+//         let thisText = this.props.thisText;
+//         return(
+//             <a href="#" className={thisClass}>{thisText}</a>
+//         );
+//     }
+// }
