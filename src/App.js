@@ -11,7 +11,8 @@ import colorNameData from './color_names.csv'
 export class App extends Component {
     constructor(props) {
         super(props);
-        this.state = {palettes: [], colorNames: [], filteredPalettes: [], nFiltered: 0};
+        this.state = {palettes: [], colorNames: [], filteredPalettes: [], nFiltered: 0, selected: false,
+        selectedPalette: []};
     }
 
     componentDidMount() {
@@ -23,6 +24,13 @@ export class App extends Component {
             this.setState({filteredPalettes: palettesData});
             this.setState({nFiltered: palettesData.length})
         });
+    }
+
+    handleSelectPalette = (palette) => {
+        
+        this.setState({ selected: true });
+        this.setState({ selectedPalette: palette });
+        
     }
 
     render() {
@@ -37,9 +45,9 @@ export class App extends Component {
                     <UpperContainer />
                     <p id="error" role="alert"></p>
                     <NumberOfResult nResult={this.state.nFiltered} />
-                    <CardContainer filteredData={this.state.filteredPalettes} />
+                    <CardContainer filteredData={this.state.filteredPalettes} handleClick={this.handleSelectPalette} />
                 </main>
-                <SelectedPanel />
+                <SelectedPanel selected={this.state.selected} palette={this.state.selectedPalette} />
                 <Footer />
             </div>
         );
@@ -112,37 +120,45 @@ class UpperContainer extends Component {
 
 class SelectedPanel extends Component {
     render() {
-        let optionLabels = [{id: 1, color: 'light shade'}, {id: 2, color: 'light accent'}, {id: 3, color: 'main color'},
-        {id: 4, color: 'dark accent'}, {id: 5, color: 'dark shade'}];
-        let optionContainers = optionLabels.map(x => <OptionContainer label={x} key={'option' + x.id}/>);
-        let selectedPalette = optionLabels.map(x => <SelectedPalette id={x.id} key={'color' + x.id}/>);
-
+        if (this.props.selected) {
+            let optionLabels = [{id: 1, color: 'light shade'}, {id: 2, color: 'light accent'}, {id: 3, color: 'main color'},
+            {id: 4, color: 'dark accent'}, {id: 5, color: 'dark shade'}];
+            let optionContainers = optionLabels.map(x => <OptionContainer label={x} key={'option' + x.id} palette={this.props.palette} />);
+            let selectedPalette = optionLabels.map(x => <SelectedPalette colorId={x.id} key={'color' + x.id} palette={this.props.palette} />);
+            return (
+                <div id="selectedpanel">
+                    <div id="selectedpalette" aria-label="selected palette">
+                        {selectedPalette}
+                    </div>
+                    <div id="coloroption">
+                        {optionContainers}
+                    </div>
+                </div>
+            );
+        }
         return (
-            <div id="selectedpanel">
-                <div id="selectedpalette" aria-label="selected palette">
-                    {selectedPalette}
-                </div>
-                <div id="coloroption">
-                    {optionContainers}
-                </div>
-            </div>
+            <div></div>
         );
     }
 }
 
 class SelectedPalette extends Component {
     render() {
+        let color = {backgroundColor: this.props.palette[this.props.colorId - 1]};
         return (
-            <div className="color" id={'color' + this.props.id}></div>
+            <div className="color" id={'color' + this.props.colorId} style={color}></div>
         );
     }
 }
 
 class OptionContainer extends Component {
     render() {
+        
         return (
             <div className="optioncontainer">
-                <p className="hex" aria-label={'selected ' + this.props.label.color} aria-live="polite"></p>
+                <p className="hex" aria-label={'selected ' + this.props.label.color} aria-live="polite">
+                    {this.props.palette[this.props.label.id - 1]}
+                </p>
                 <button className="lock" id={'lock' + this.props.label.id} aria-label="color lock" aria-pressed="true">
                     <FontAwesomeIcon icon={faLock} className='fa-lock' aria-label='menu' />
                 </button>
@@ -165,7 +181,7 @@ class Footer extends Component {
 
 class CardContainer extends Component {
     render() {
-        let paletteCards = this.props.filteredData.map(x => <PaletteCard palette={x} />)
+        let paletteCards = this.props.filteredData.map(x => <PaletteCard palette={x} handleSelectPalette={this.props.handleClick} />)
 
         return (
             <section id="cardcontainer">
@@ -176,6 +192,12 @@ class CardContainer extends Component {
 }
 
 class PaletteCard extends Component {
+    handleClick = () => {
+        let colors = [this.props.palette.light_shade, this.props.palette.light_accent, this.props.palette.main, 
+            this.props.palette.dark_accent, this.props.palette.dark_shade];
+        this.props.handleSelectPalette(colors);
+    }
+
     render() {
         let colors = [this.props.palette.light_shade, this.props.palette.light_accent, this.props.palette.main, 
             this.props.palette.dark_accent, this.props.palette.dark_shade];
@@ -183,7 +205,7 @@ class PaletteCard extends Component {
         colors = colors.map(x => <PaletteCardColor color={x} />);
 
         return (
-            <div className="palette" aria-label="color palette">
+            <div className="palette" aria-label="color palette" onClick={this.handleClick}>
                 <div className="setinfo">
                     <p className="author">{'Created by ' + this.props.palette.username}</p>
                     <div className="colorcontainer">
