@@ -250,7 +250,6 @@ h2 {
 }
 
 #selectedpanel {
-    display: none;
     position: fixed;
     /* left: 15%; */
     left: 0;
