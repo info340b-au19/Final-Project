@@ -31,7 +31,10 @@ export class App extends Component {
                 let data = state.filteredPalettes.push(palettesData);
                 return data;
             });
-            this.setState({nFiltered: palettesData.length})
+            this.setState(state => {
+                let data = state.nFiltered++;
+                return data;
+            });
         });
     }
 
