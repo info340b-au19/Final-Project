@@ -6,7 +6,8 @@ import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import './index.css';
 import * as d3 from 'd3';
 import palettesData from './palettes.csv';
-import colorNameData from './color_names.csv'
+import colorNameData from './color_names.csv';
+import * as convert from 'color-convert';
 
 export class App extends Component {
     constructor(props) {
