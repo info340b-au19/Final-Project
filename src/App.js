@@ -17,11 +17,20 @@ export class App extends Component {
 
     componentDidMount() {
         d3.csv(colorNameData, (colorNameData) => {
-            this.setState({colorNames: colorNameData});
+            this.setState(state => {
+                let data = state.colorNames.push(colorNameData);
+                return data;
+            });
         });
         d3.csv(palettesData, (palettesData) => {
-            this.setState({palettes: palettesData});
-            this.setState({filteredPalettes: palettesData});
+            this.setState(state => {
+                let data = state.palettes.push(palettesData);
+                return data;
+            });
+            this.setState(state => {
+                let data = state.filteredPalettes.push(palettesData);
+                return data;
+            });
             this.setState({nFiltered: palettesData.length})
         });
     }
