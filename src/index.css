@@ -1,12 +1,3 @@
-:root {
-    --lightShade: #ffffff;
-    --lightAccent: #818181;
-    --mainColor: #ff6f61;
-    --darkAccent: #836e58;
-    --darkShade: #232326;
-}
-
-
 body, .appContainer, h1, .filter > p, .color, .hex, .lock, footer {
     margin: 0;
 }
@@ -116,6 +107,7 @@ aside > .navigate {
 
 .navigate:hover {
     background-color: var(--mainColor);
+    cursor: pointer;
 }
 
 h2 {
@@ -423,8 +415,8 @@ address {
     .lock {
         width: auto;
         float: right;
-        margin-right: 10%;
-        font-size: 1.3rem;
+        margin-right: 5%;
+        font-size: 1.2rem;
     }
 
     .coloroption {
