@@ -11,8 +11,9 @@ import colorNameData from './color_names.csv'
 export class App extends Component {
     constructor(props) {
         super(props);
-        this.state = {palettes: [], colorNames: [], filteredPalettes: [], nFiltered: 0, selected: false,
-        selectedPalette: []};
+        this.state = {palettes: [], colorNames: {hex: [], names:[]}/*unini yet */, filteredPalettes: [], nFiltered: 0, selected: false,
+        selectedPalette: [], lockStatus: []/*unini yet */, filter: []/*unini yet */, selectedColor: {hex: [], names:[]}/*get the hex codes and names of current palette colors, merge with other 
+        state if necessary unini yet*/};
     }
 
     componentDidMount() {
@@ -33,6 +34,64 @@ export class App extends Component {
         
     }
 
+    removeFilter(colorName) {
+        let i;
+        i = this.state.filter.indexOf(colorName);
+        let changes = { filter: filter.slice(i, 1)};
+        this.setState(changes);
+    }
+
+    //so far addFilter didn't do any thing on rendering filterbubbles, as "returning" is not
+    //allowed for this function
+    addFilter(filter, lockId) {
+        // lockId is the integer id(1~5) of lock button that is related to this filter
+        // if lockId is 0, the filter is not associated with a lock
+        let lowerFilter = filter.toLowerCase();
+        let checkedFilter = this.userOrColor(lowerFilter);
+        let filterChange = { filter: filter.push(checkedFilter)};
+        this.setState(filterChange);
+    }
+
+    userOrColor(filter) {
+        if (!this.state.colorNames.name.includes(filter)) {
+            return '!' + filter;
+        }
+        return filter;
+    }
+
+    handleClickLock = (i) => {    // i here represents the index of "selected colors" in the "selectedColor" state, from 0 to 4
+        // {
+        //     event.preventDefault();
+            
+        //     if (STATE.lockState[i]) {
+        //         removeFilter(STATE.selectedColor[i]);
+        //         STATE.lockState[i] = false;
+        //         $('.filter:contains(' + STATE.selectedColorNames[i] + ')').remove();
+        //         console.log(STATE.filter);
+        //     } else {
+        //         addFilter(STATE.selectedColorNames[i], i + 1);
+        //         STATE.lockState[i] = true;
+        //         console.log(STATE.filter);
+        //     }
+        //     $(this).toggleClass('locked');
+        // }
+
+            if(this.state.lockStatus[i]) {
+                this.removeFilter(this.state.selectedColor.names[i]);
+                this.state.lockStatus[i] = false;
+                // remove:
+                let bubbles = document.getElementById("filterContainer").querySelectorAll('.filter');
+                for (let a=0; a<bubbles.length; a++) {
+                    if(bubbles[a].innerHTML.includes(this.state.selectedColor.names[i])) {
+                        bubbles[a].remove();
+                    }
+                }
+            } else {
+                this.addFilter(this.state.selectedColorName[i], i+1);
+                this.state.lockStatus[i] = true;
+            }
+    }
+
     render() {
         return (
             <div>
@@ -47,7 +106,7 @@ export class App extends Component {
                     <NumberOfResult nResult={this.state.nFiltered} />
                     <CardContainer filteredData={this.state.filteredPalettes} handleClick={this.handleSelectPalette} />
                 </main>
-                <SelectedPanel selected={this.state.selected} palette={this.state.selectedPalette} />
+                <SelectedPanel selected={this.state.selected} palette={this.state.selectedPalette} callBack={this.handleClickLock} />
                 <Footer />
             </div>
         );
@@ -120,10 +179,11 @@ class UpperContainer extends Component {
 
 class SelectedPanel extends Component {
     render() {
+        let handleClick = this.props.callBack;
         if (this.props.selected) {
             let optionLabels = [{id: 1, color: 'light shade'}, {id: 2, color: 'light accent'}, {id: 3, color: 'main color'},
             {id: 4, color: 'dark accent'}, {id: 5, color: 'dark shade'}];
-            let optionContainers = optionLabels.map(x => <OptionContainer label={x} key={'option' + x.id} palette={this.props.palette} />);
+            let optionContainers = optionLabels.map(x => <OptionContainer label={x} key={'option' + x.id} palette={this.props.palette} callBack={handleClick} />);
             let selectedPalette = optionLabels.map(x => <SelectedPalette colorId={x.id} key={'color' + x.id} palette={this.props.palette} />);
             return (
                 <div id="selectedpanel">
@@ -152,20 +212,37 @@ class SelectedPalette extends Component {
 }
 
 class OptionContainer extends Component {
-    render() {
-        
+    handleClick = () => {
+        let buttonIndex = this.props.label.id - 1;
+        this.props.callBack(buttonIndex);
+    }
+    render() {  
         return (
             <div className="optioncontainer">
                 <p className="hex" aria-label={'selected ' + this.props.label.color} aria-live="polite">
                     {this.props.palette[this.props.label.id - 1]}
                 </p>
-                <button className="lock" id={'lock' + this.props.label.id} aria-label="color lock" aria-pressed="true">
+                <button className="lock" id={'lock' + this.props.label.id} aria-label="color lock" aria-pressed="true" onClick={this.handleClick}>
                     <FontAwesomeIcon icon={faLock} className='fa-lock' aria-label='menu' />
                 </button>
             </div>
         );
     }
 }
+
+// class ClickableButton extends Component {
+//     render() {
+//         let handleClick = this.props.onClick;
+//         let paletteIndex = this.props.label.id - 1;
+
+//         return (
+//         <button className="lock" id={'lock' + this.props.label.id} aria-label="color lock" aria-pressed="true">
+//             <FontAwesomeIcon icon={faLock} className='fa-lock' aria-label='menu' />
+//         </button>
+//         );
+//     }
+// }
+
 
 class Footer extends Component {
     render() {
@@ -181,7 +258,9 @@ class Footer extends Component {
 
 class CardContainer extends Component {
     render() {
-        let paletteCards = this.props.filteredData.map(x => <PaletteCard palette={x} handleSelectPalette={this.props.handleClick} />)
+    // let thisFilteredData = this.props.filteredData;
+    // console.log(Array.isArray(thisFilteredData));
+    let paletteCards = this.props.filteredData.map(x => {return <PaletteCard palette={x} handleSelectPalette={this.props.handleClick} />})
 
         return (
             <section id="cardcontainer">

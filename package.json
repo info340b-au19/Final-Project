@@ -7,12 +7,14 @@
     "@fortawesome/free-solid-svg-icons": "^5.11.2",
     "@fortawesome/react-fontawesome": "^0.1.7",
     "d3": "^5.14.1",
+    "install": "^0.13.0",
     "react": "^16.12.0",
     "react-csv-reader": "^2.0.2",
     "react-d3-library": "^1.1.8",
     "react-dom": "^16.12.0",
     "react-papaparse": "^1.0.5",
-    "react-scripts": "3.2.0"
+    "react-scripts": "3.2.0",
+    "to": "^0.2.9"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -34,5 +36,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "font-awesome": "^4.7.0"
   }
 }
