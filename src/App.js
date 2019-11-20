@@ -3,10 +3,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
 import { faLock } from '@fortawesome/free-solid-svg-icons';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
+import { faTimes } from '@fortawesome/free-solid-svg-icons';
+import {faPalette} from '@fortawesome/free-solid-svg-icons';
 import './index.css';
 import * as d3 from 'd3';
 import palettesData from './palettes.csv';
-import colorNameData from './color_names.csv';
 import * as convert from 'color-convert';
 //console.log(colorNameData);
 
@@ -14,20 +15,12 @@ import * as convert from 'color-convert';
 export class App extends Component {
     constructor(props) {
         super(props);
-        this.state = {palettes: [], /*colorNames: {hex: [], names:[]}/*unini yet */filteredPalettes: [], nFiltered: 0, selected: false,
-        selectedPalette: [], lockStatus: []/*unini yet */, filter: []/*unini yet */, selectedColor: {hex: [], names:[]}/*get the hex codes and names of current palette colors, merge with other 
-        state if necessary unini yet*/};
+        this.state = {palettes: [], filteredPalettes: [], nFiltered: 0, selected: false, error: '', mobileMenuOn: false,
+        selectedPalette: [], currentTheme: ['#ffffff', '#818181', '#ff6f61', '#836e58', '#232326'], dataLoaded: false,
+        filterList: [], lockStatus: [false, false, false, false, false], searchQuery: ''};
     }
 
     componentDidMount() {
-        d3.csv(colorNameData, (colorNameData) => {
-            //console.log(colorNameData);
-            this.setState(state => {
-                //console.log(colorNameData.color_name+' '+colorNameData.hex);
-                let data = state.colorNames.push(colorNameData);
-                return data;
-            });
-        });
         d3.csv(palettesData, (palettesData) => {
             this.setState(state => {
                 let data = state.palettes.push(palettesData);
@@ -41,6 +34,7 @@ export class App extends Component {
                 let data = state.nFiltered++;
                 return data;
             });
+            this.setState({ dataLoaded: true });
         });
     }
 
@@ -51,79 +45,128 @@ export class App extends Component {
         
     }
 
-    removeFilter(colorName) {
-        let i;
-        i = this.state.filter.indexOf(colorName);
-        let changes = { filter: this.state.filter.slice(i, 1)};
-        this.setState(changes);
-    }
-
-    //so far addFilter didn't do any thing on rendering filterbubbles, as "returning" is not
-    //allowed for this function
-    addFilter(filter, lockId) {
-        // lockId is the integer id(1~5) of lock button that is related to this filter
-        // if lockId is 0, the filter is not associated with a lock
-        let lowerFilter = filter.toLowerCase();
-        let checkedFilter = this.userOrColor(lowerFilter);
-        let filterChange = { filter: this.state.filter.push(checkedFilter)};
-        this.setState(filterChange);
-    }
-
-    userOrColor(filter) {
-        if (!this.state.colorNames.name.includes(filter)) {
-            return '!' + filter;
+    handleApplyClick = () => {
+        if (this.state.selected) {
+            this.setState({ currentTheme: this.state.selectedPalette });
         }
-        return filter;
     }
 
-    handleClickLock = (i) => {    // i here represents the index of "selected colors" in the "selectedColor" state, from 0 to 4
-        // {
-        //     event.preventDefault();
-            
-        //     if (STATE.lockState[i]) {
-        //         removeFilter(STATE.selectedColor[i]);
-        //         STATE.lockState[i] = false;
-        //         $('.filter:contains(' + STATE.selectedColorNames[i] + ')').remove();
-        //         console.log(STATE.filter);
-        //     } else {
-        //         addFilter(STATE.selectedColorNames[i], i + 1);
-        //         STATE.lockState[i] = true;
-        //         console.log(STATE.filter);
-        //     }
-        //     $(this).toggleClass('locked');
-        // }
+    handleAddFilter = (filter) => {
+        if (!this.state.filterList.includes(filter)) {
 
-            if(this.state.lockStatus[i]) {
-                this.removeFilter(this.state.selectedColor.names[i]);
-                this.state.lockStatus[i] = false;
-                // remove:
-                let bubbles = document.getElementById("filterContainer").querySelectorAll('.filter');
-                for (let a=0; a<bubbles.length; a++) {
-                    if(bubbles[a].innerHTML.includes(this.state.selectedColor.names[i])) {
-                        bubbles[a].remove();
-                    }
-                }
+            let filters = this.state.filterList;
+            filters.push(filter);
+            this.setState({ filterList: filters });
+            
+            let list = this.state.filteredPalettes.filter((palette) => {
+                
+                return (palette.username == filter || convert.hex.keyword(palette.light_shade) == filter || 
+                convert.hex.keyword(palette.light_accent) == filter || convert.hex.keyword(palette.main) == filter ||
+                convert.hex.keyword(palette.dark_accent) == filter || convert.hex.keyword(palette.dark_shade) == filter);
+            });
+            this.setState({ filteredPalettes: list });
+            this.setState({ nFiltered: list.length});
+        }
+    }
+
+    handleRemoveFilter = (filter) => {
+        let list = this.state.filterList.filter((data) => {
+            return data != filter;
+        })
+        this.setState({ filterList: list }, () => {
+            if (this.state.filterList.length == 0) {
+                this.setState({ filteredPalettes: this.state.palettes });
+                this.setState({ nFiltered: this.state.palettes.length});
             } else {
-                this.addFilter(this.state.selectedColorName[i], i+1);
-                this.state.lockStatus[i] = true;
+                let list = this.state.palettes;
+                let filterList = this.state.filterList;
+                list = list.filter((data) => {
+                    return (filterList.includes(data.username) || filterList.includes(convert.hex.keyword(data.light_shade)) || 
+                        filterList.includes(convert.hex.keyword(data.light_accent)) || filterList.includes(convert.hex.keyword(data.main)) ||
+                        filterList.includes(convert.hex.keyword(data.dark_accent)) || filterList.includes(convert.hex.keyword(data.dark_shade)));
+                });
+                
+                this.setState({ filteredPalettes: list });
+                this.setState({ nFiltered: list.length});
             }
+        });
+    }
+
+    handleUpdateLock = (filter, lockId) => {
+        let currLockStatus = this.state.lockStatus;
+        
+        let selectedColorNames = this.state.selectedPalette.map(x => convert.hex.keyword(x));
+        let lockColor = selectedColorNames[lockId];
+        for (let i = 0; i < 5; i++) {
+            if (lockColor == selectedColorNames[i]) {
+                currLockStatus[i] = !currLockStatus[i];
+            }
+        }
+        if (currLockStatus[lockId]) {
+            this.handleAddFilter(filter);
+        } else {
+            this.handleRemoveFilter(filter);
+        }
+        
+        this.setState({ lockStatus: currLockStatus });
+    }
+
+    handleResetLock = () => {
+        this.setState({ lockStatus: [false, false, false, false, false] });
+    }
+
+    handleUpdateQuery = (input) => {
+        let cleanedInput = input.toLowerCase().replace(/\s+/g, '');
+        this.setState({ searchQuery: cleanedInput });
+    }
+
+    handleError = (msg) => {
+        
+        this.setState({ error: msg });
+        setTimeout(() => {
+            this.setState({ error: '' });
+        }, 3000);
+    }
+
+    handleMobileMenu = () => {
+        let status = !this.state.mobileMenuOn;
+        this.setState({ mobileMenuOn: status });
     }
 
     render() {
+        let style = { '--lightShade': this.state.currentTheme[0], '--lightAccent': this.state.currentTheme[1], 
+        '--mainColor': this.state.currentTheme[2], '--darkAccent': this.state.currentTheme[3], 
+        '--darkShade': this.state.currentTheme[4]};
+        
+        let upperContainerProp = {filterList: this.state.filterList, handleAddFilter: this.handleAddFilter, handleSearch: this.handleUpdateQuery,
+            searchQuery: this.state.searchQuery, handleLock: this.handleUpdateLock, handleRemoveFilter: this.handleRemoveFilter,
+            selectedPalette: this.state.selectedPalette, handleError: this.handleError};
+        
+        let cardContainerProp = {filteredData: this.state.filteredPalettes, handleClick: this.handleSelectPalette, 
+            handleResetLock: this.handleResetLock};
+
+        let selectedPanelProp = {selected: this.state.selected, palette: this.state.selectedPalette, handleLock: this.handleUpdateLock, 
+            lockStatus: this.state.lockStatus}
+        
+        let mobileNavProp = {handleApply: this.handleApplyClick, mobileMenuOn: this.state.mobileMenuOn, handleMobileMenu: this.handleMobileMenu}
         return (
-            <div>
+
+            <div className='appContainer' style={style}>
                 <header>
                     <h1>acryline</h1>
                 </header>
-                <NavBar />
-                <MobileNav />
+                <NavBar handleApply={this.handleApplyClick} handleMobileMenu={this.handleMobileMenu}/>
+                <MobileNav propList={mobileNavProp} />
                 <main>
-                    <UpperContainer />
-                    <p id="error" role="alert"></p>
+                    <UpperContainer propList={upperContainerProp} />
+                    <ShowError msg={this.state.error}/>
                     <NumberOfResult nResult={this.state.nFiltered} />
-                    <CardContainer filteredData={this.state.filteredPalettes} handleClick={this.handleSelectPalette} />
+                    {!this.state.dataLoaded &&
+                        <FontAwesomeIcon icon={faPalette} className='fa-palette' spin/>
+                    }
+                    <CardContainer propList={cardContainerProp} />
                 </main>
-                <SelectedPanel selected={this.state.selected} palette={this.state.selectedPalette} callBack={this.handleClickLock} />
+                <SelectedPanel propList={selectedPanelProp} />
                 <Footer />
             </div>
         );
@@ -136,11 +179,11 @@ class NavBar extends Component {
     render() {
         return (
             <nav>
-                <NavTabs />
-                <div className='hamburger-menu'>
-                    <a id='menu-unclicked' href=''>
+                <NavTabs handleApply={this.props.handleApply}/>
+                <div className='hamburger-menu' onClick={this.props.handleMobileMenu}>
+                    <div id='menu-unclicked'>
                         <FontAwesomeIcon icon={faBars} className='fa-bars' aria-label='menu' />
-                    </a>
+                    </div>
                 </div>
             </nav>
         );
@@ -149,16 +192,21 @@ class NavBar extends Component {
 
 class MobileNav extends Component {
     render() {
-        return (
-            <aside>
-                <div className='hamburger-menu'>
-                    <a id='menu-clicked' href=''>
-                        <FontAwesomeIcon icon={faBars} className='fa-bars' aria-label='menu' />
-                    </a>
-                </div>
-                <NavTabs />
-            </aside>
-        );
+        let menu;
+        if (this.props.propList.mobileMenuOn) {
+            menu = (<aside>
+                        <div className='hamburger-menu' onClick={this.props.propList.handleMobileMenu}>
+                            <div id='menu-clicked'>
+                                <FontAwesomeIcon icon={faBars} className='fa-bars' aria-label='menu' />
+                            </div>
+                        </div>
+                        <NavTabs handleApply={this.props.propList.handleApply}/>
+                    </aside>);
+        } else {
+            menu = <div></div>;
+        }
+
+        return menu;
     }
 }
 
@@ -166,10 +214,10 @@ class NavTabs extends Component {
     render() {
         return (
             <div>
-                <a href='' className='home navigate'>Home</a>
-                <a href='' className='create navigate'>Create</a>
-                <a href='' className='explore selectedtab navigate'>Explore</a>
-                <a href='' className='apply navigate'>Apply</a>
+                <div className='home navigate'>Home</div>
+                <div className='create navigate'>Create</div>
+                <div className='explore selectedtab navigate'>Explore</div>
+                <div className='apply navigate' onClick={this.props.handleApply}>Apply</div>
             </div>
         );
     }
@@ -177,31 +225,50 @@ class NavTabs extends Component {
 
 class UpperContainer extends Component {
     render() {
-        return (
+        let searchBoxProp = {handleAddFilter: this.props.propList.handleAddFilter, handleSearch: this.props.propList.handleSearch, 
+            searchQuery: this.props.propList.searchQuery, handleLock: this.props.propList.handleLock, selectedPalette: this.props.propList.selectedPalette, 
+            filterList: this.props.propList.filterList, handleError: this.props.propList.handleError}
+        
+        let filterContainerProp = {filterList: this.props.propList.filterList, handleLock: this.props.propList.handleLock, 
+            handleRemoveFilter: this.props.propList.handleRemoveFilter, selectedPalette: this.props.propList.selectedPalette}
+        
+            return (
             <section id="uppercontainer">
                 <h2>Explore Other Creations</h2>
                 <div id="searchcontainer">
-                    <form className="searchbox" action="">
-                        <input type="text" id="searchinput" placeholder="Search..." aria-label="search input" />
-                        <button type="submit" id="searchbutton">
-                            <FontAwesomeIcon icon={faSearch} className='fa-search' aria-hidden="true" />
-                        </button>
-                    </form>
+                    <SearchBox propList={searchBoxProp} />
+                    <FilterContainer propList={filterContainerProp} />
                 </div>
-                <div id="filterContainer"></div>
             </section>
+        );
+    }
+}
+
+class ShowError extends Component {
+    render() {
+
+        return (
+            <div>
+                {this.props.msg != '' &&
+                    <p id="error" role="alert">{this.props.msg}</p>
+                }
+            </div>
         );
     }
 }
 
 class SelectedPanel extends Component {
     render() {
-        let handleClick = this.props.callBack;
-        if (this.props.selected) {
+        if (this.props.propList.selected) {
             let optionLabels = [{id: 1, color: 'light shade'}, {id: 2, color: 'light accent'}, {id: 3, color: 'main color'},
             {id: 4, color: 'dark accent'}, {id: 5, color: 'dark shade'}];
-            let optionContainers = optionLabels.map(x => <OptionContainer label={x} key={'option' + x.id} palette={this.props.palette} callBack={handleClick} />);
-            let selectedPalette = optionLabels.map(x => <SelectedPalette colorId={x.id} key={'color' + x.id} palette={this.props.palette} />);
+
+            let optionContainerProp = {palette: this.props.propList.palette, handleLock: this.props.propList.handleLock};
+            let optionContainers = optionLabels.map(x => <OptionContainer label={x} key={'option' + x.id} propList={optionContainerProp}
+                locked={this.props.propList.lockStatus[x.id - 1]} />);
+
+            let selectedPalette = optionLabels.map(x => <SelectedPalette colorId={x.id} key={'color' + x.id} 
+                palette={this.props.propList.palette} />);
             return (
                 <div id="selectedpanel">
                     <div id="selectedpalette" aria-label="selected palette">
@@ -230,36 +297,29 @@ class SelectedPalette extends Component {
 
 class OptionContainer extends Component {
     handleClick = () => {
-        let buttonIndex = this.props.label.id - 1;
-        this.props.callBack(buttonIndex);
+        let filter = convert.hex.keyword(this.props.propList.palette[this.props.label.id - 1]);
+        this.props.propList.handleLock(filter, this.props.label.id - 1);
     }
-    render() {  
+
+    render() {
+        let className = 'lock';
+        if (this.props.locked) {
+            className += ' locked';
+        }
+
         return (
             <div className="optioncontainer">
                 <p className="hex" aria-label={'selected ' + this.props.label.color} aria-live="polite">
-                    {this.props.palette[this.props.label.id - 1]}
+                    {this.props.propList.palette[this.props.label.id - 1]}
                 </p>
-                <button className="lock" id={'lock' + this.props.label.id} aria-label="color lock" aria-pressed="true" onClick={this.handleClick}>
+                <button className={className} id={'lock' + this.props.label.id} aria-label="color lock" aria-pressed="true" 
+                onClick={this.handleClick}>
                     <FontAwesomeIcon icon={faLock} className='fa-lock' aria-label='menu' />
                 </button>
             </div>
         );
     }
 }
-
-// class ClickableButton extends Component {
-//     render() {
-//         let handleClick = this.props.onClick;
-//         let paletteIndex = this.props.label.id - 1;
-
-//         return (
-//         <button className="lock" id={'lock' + this.props.label.id} aria-label="color lock" aria-pressed="true">
-//             <FontAwesomeIcon icon={faLock} className='fa-lock' aria-label='menu' />
-//         </button>
-//         );
-//     }
-// }
-
 
 class Footer extends Component {
     render() {
@@ -275,9 +335,8 @@ class Footer extends Component {
 
 class CardContainer extends Component {
     render() {
-    // let thisFilteredData = this.props.filteredData;
-    // console.log(Array.isArray(thisFilteredData));
-    let paletteCards = this.props.filteredData.map(x => {return <PaletteCard palette={x} handleSelectPalette={this.props.handleClick} />})
+        let paletteCards = this.props.propList.filteredData.map(x => <PaletteCard palette={x} handleSelectPalette={this.props.propList.handleClick} 
+            handleResetLock={this.props.propList.handleResetLock}/>)
 
         return (
             <section id="cardcontainer">
@@ -291,6 +350,7 @@ class PaletteCard extends Component {
     handleClick = () => {
         let colors = [this.props.palette.light_shade, this.props.palette.light_accent, this.props.palette.main, 
             this.props.palette.dark_accent, this.props.palette.dark_shade];
+        this.props.handleResetLock();
         this.props.handleSelectPalette(colors);
     }
 
@@ -332,89 +392,74 @@ class NumberOfResult extends Component {
     }
 }
 
+class SearchBox extends Component {
+    trackInput = (e) => {
+        this.props.propList.handleSearch(e.target.value);
+    }
 
-//abondoned//
+    handleClick = (e) => {
+        e.preventDefault();
+        let filter = this.props.propList.searchQuery;
 
-// import React, { Component } from 'react'; //import React Component
+        if (this.props.propList.filterList.includes(filter)) {
+            this.props.propList.handleError('Already filtered!');
+            
+        } else {
+            let selectedColorNames = this.props.propList.selectedPalette.map(x => convert.hex.keyword(x));
+            let lockId = selectedColorNames.indexOf(filter);
+            if (lockId != -1) {
+                this.props.propList.handleLock(filter, lockId);
+            }
+            this.props.propList.handleAddFilter(filter);
+        }
+    }
 
-// export class App extends React.Component {
-//     render() {
-//         return (
-//             // <head>
-//             //     <meta charset="utf-8" />
-//             //     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-//             //     <meta name="author" content="Gunhyung Cho, Jiuzhou Zhao" />
-//             //     <meta name="description" content="users can look for other people's shared palettes with search box and color lock feature" />
-//             //     <meta name="keywords" content="design, graphic, illustration, color" />
-//             //     <title>acryline</title>
-//             //     <link rel="stylesheet" href="css/style.css" />
-//             //     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
-//             //     <link href="https://fonts.googleapis.com/css?family=Oxygen:400,700&amp;display=swap" rel="stylesheet" />
-//             // </head>
-//             <div className="container">
-//                 <Header />
-//                 <Body />
-//             </div>
-//         );
-//     }
-// }
+    render() {
+        return (
+            <form className="searchbox" action="">
+                <input type="text" id="searchinput" placeholder="Search..." aria-label="search input" onChange={this.trackInput}/>
+                <button type="submit" id="searchbutton" onClick={this.handleClick}>
+                    <FontAwesomeIcon icon={faSearch} className='fa-search' aria-hidden="true" />
+                </button>
+            </form>
+        );
+    }
+}
 
-// class Header extends React.component {
-//     render() {
-//         return(
-//             <head>
-//                 <meta charset="utf-8" />
-//                 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-//                 <meta name="author" content="Gunhyung Cho, Jiuzhou Zhao" />
-//                 <meta name="description" content="users can look for other people's shared palettes with search box and color lock feature" />
-//                 <meta name="keywords" content="design, graphic, illustration, color" />
-//                 <title>acryline</title>
-//                 <link rel="stylesheet" href="css/style.css" />
-//                 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
-//                 <link href="https://fonts.googleapis.com/css?family=Oxygen:400,700&amp;display=swap" rel="stylesheet" />
-//             </head> 
-//         );        
-//     }
-// }
+class FilterContainer extends Component {
+    render() {
+        let filterProp = {handleLock: this.props.propList.handleLock, handleRemoveFilter: this.props.propList.handleRemoveFilter, 
+            selectedPalette: this.props.propList.selectedPalette};
 
-// class Body extends React.component {
-//     render() {
-//         return(
-//             <body>
-//                 <header>
-//                     <h1>acryline</h1>
-//                 </header>
-//                 <NAV />
-//                 <ASIDE />
-//                 <MAIN />
-//                 <SelectedPanel />
-//                 <footer>
-//                     <p>© 2019 Gunhyung Cho  |  Jiuzhou Zhao</p>
-//                     <address>Contact: <a href="mailto:ghcho@uw.edu">ghcho@uw.edu</a> 
-//             |       <a href="mailto:jz73@uw.edu">jz73@uw.edu</a></address>
-//                 </footer>
-//             </body>
-//         );
-//     }
-// }
+        let filters = this.props.propList.filterList.map(x => <Filter filterText={x} propList={filterProp}/>);
 
+        return (
+            <div id="filterContainer">
+                {filters}
+            </div>
+        );
+    }
+}
 
-// class NAV extends React.component {
-//     render() {
-//         let classesAndText = this.props.classesAndText;
-//         let 
-//         return(
+class Filter extends Component {
+    handleClick = () => {
+        let filter = this.props.filterText;
+        
+        let selectedColorNames = this.props.propList.selectedPalette.map(x => convert.hex.keyword(x));
+        
+        let lockId = selectedColorNames.indexOf(filter);
+        if (lockId != -1) {
+            this.props.propList.handleLock(filter, lockId);
+        }
+        this.props.propList.handleRemoveFilter(filter);
+    }
 
-//         );
-//     }
-// }
-
-// class NavOptions extends React.component {
-//     render() {
-//         let thisClass = this.props.thisClass;
-//         let thisText = this.props.thisText;
-//         return(
-//             <a href="#" className={thisClass}>{thisText}</a>
-//         );
-//     }
-// }
+    render() {
+        return (
+            <div className="filter" aria-label="delete filter" role="button" onClick={this.handleClick}>
+                <FontAwesomeIcon icon={faTimes} className='fa-times' aria-hidden="true" />
+                <p>{this.props.filterText}</p>
+            </div>
+        )
+    }
+}

@@ -1,20 +1,17 @@
-:root {
-    --lightShade: #ffffff;
-    --lightAccent: #818181;
-    --mainColor: #ff6f61;
-    --darkAccent: #836e58;
-    --darkShade: #232326;
-}
-
-
-body, h1, .filter > p, .color, .hex, .lock, footer {
+body, .appContainer, h1, .filter > p, .color, .hex, .lock, footer {
     margin: 0;
 }
 
 body {
-    background-color: var(--mainColor);
     padding: 0;
     font-family: 'Oxygen', sans-serif;
+}
+
+.appContainer {
+    padding: 0;
+    background-color: var(--mainColor);
+    width: 100%;
+    height: 100%;
 }
 
 header, .colorcontainer, #selectedpanel, .lock, .searchbox, #searchinput {
@@ -89,7 +86,6 @@ address > a {
 }
 
 aside {
-    display: none;
     position: fixed;
     height: 100%;
     width: 100%;
@@ -100,7 +96,7 @@ aside {
     padding-top: 2.25rem;
 }
 
-aside > .navigate {
+aside > div > .navigate {
     display: block;
     padding: 1em .8em;
     font-size: 1.5rem;
@@ -110,6 +106,7 @@ aside > .navigate {
 
 .navigate:hover {
     background-color: var(--mainColor);
+    cursor: pointer;
 }
 
 h2 {
@@ -174,6 +171,13 @@ h2 {
     margin-right: .75em;
 }
 
+.fa-palette {
+    display: block;
+    color: #ff6f61;
+    font-size: 5rem;
+    margin: 2em auto;
+}
+
 .filter > p, .optioncontainer {
     display: inline-block;
 }
@@ -199,7 +203,6 @@ h2 {
     padding: .5em;
     font-weight: 700;
     font-size: 1.2rem;
-    display: none;
 }
 
 #nPalettes {
@@ -417,8 +420,8 @@ address {
     .lock {
         width: auto;
         float: right;
-        margin-right: 10%;
-        font-size: 1.3rem;
+        margin-right: 5%;
+        font-size: 1.2rem;
     }
 
     .coloroption {
