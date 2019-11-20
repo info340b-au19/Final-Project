@@ -4,6 +4,7 @@ import { faBars } from '@fortawesome/free-solid-svg-icons';
 import { faLock } from '@fortawesome/free-solid-svg-icons';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
+import {faPalette} from '@fortawesome/free-solid-svg-icons';
 import './index.css';
 import * as d3 from 'd3';
 import palettesData from './palettes.csv';
@@ -13,7 +14,7 @@ export class App extends Component {
     constructor(props) {
         super(props);
         this.state = {palettes: [], filteredPalettes: [], nFiltered: 0, selected: false, error: '', mobileMenuOn: false,
-        selectedPalette: [], currentTheme: ['#ffffff', '#818181', '#ff6f61', '#836e58', '#232326'],
+        selectedPalette: [], currentTheme: ['#ffffff', '#818181', '#ff6f61', '#836e58', '#232326'], dataLoaded: false,
         filterList: [], lockStatus: [false, false, false, false, false], searchQuery: ''};
     }
 
@@ -31,6 +32,7 @@ export class App extends Component {
                 let data = state.nFiltered++;
                 return data;
             });
+            this.setState({ dataLoaded: true });
         });
     }
 
@@ -157,6 +159,9 @@ export class App extends Component {
                     <UpperContainer propList={upperContainerProp} />
                     <ShowError msg={this.state.error}/>
                     <NumberOfResult nResult={this.state.nFiltered} />
+                    {!this.state.dataLoaded &&
+                        <FontAwesomeIcon icon={faPalette} className='fa-palette' spin/>
+                    }
                     <CardContainer propList={cardContainerProp} />
                 </main>
                 <SelectedPanel propList={selectedPanelProp} />
