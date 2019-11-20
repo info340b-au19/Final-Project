@@ -12,7 +12,7 @@ import * as convert from 'color-convert';
 export class App extends Component {
     constructor(props) {
         super(props);
-        this.state = {palettes: [], filteredPalettes: [], nFiltered: 0, selected: false,
+        this.state = {palettes: [], filteredPalettes: [], nFiltered: 0, selected: false, error: '', mobileMenuOn: false,
         selectedPalette: [], currentTheme: ['#ffffff', '#818181', '#ff6f61', '#836e58', '#232326'],
         filterList: [], lockStatus: [false, false, false, false, false], searchQuery: ''};
     }
@@ -42,7 +42,6 @@ export class App extends Component {
     }
 
     handleApplyClick = () => {
-        console.log('clicked');
         if (this.state.selected) {
             this.setState({ currentTheme: this.state.selectedPalette });
         }
@@ -117,29 +116,50 @@ export class App extends Component {
         this.setState({ searchQuery: cleanedInput });
     }
 
+    handleError = (msg) => {
+        
+        this.setState({ error: msg });
+        setTimeout(() => {
+            this.setState({ error: '' });
+        }, 3000);
+    }
+
+    handleMobileMenu = () => {
+        let status = !this.state.mobileMenuOn;
+        this.setState({ mobileMenuOn: status });
+    }
+
     render() {
         let style = { '--lightShade': this.state.currentTheme[0], '--lightAccent': this.state.currentTheme[1], 
         '--mainColor': this.state.currentTheme[2], '--darkAccent': this.state.currentTheme[3], 
         '--darkShade': this.state.currentTheme[4]};
+        
+        let upperContainerProp = {filterList: this.state.filterList, handleAddFilter: this.handleAddFilter, handleSearch: this.handleUpdateQuery,
+            searchQuery: this.state.searchQuery, handleLock: this.handleUpdateLock, handleRemoveFilter: this.handleRemoveFilter,
+            selectedPalette: this.state.selectedPalette, handleError: this.handleError};
+        
+        let cardContainerProp = {filteredData: this.state.filteredPalettes, handleClick: this.handleSelectPalette, 
+            handleResetLock: this.handleResetLock};
+
+        let selectedPanelProp = {selected: this.state.selected, palette: this.state.selectedPalette, handleLock: this.handleUpdateLock, 
+            lockStatus: this.state.lockStatus}
+        
+        let mobileNavProp = {handleApply: this.handleApplyClick, mobileMenuOn: this.state.mobileMenuOn, handleMobileMenu: this.handleMobileMenu}
         return (
-            
+
             <div className='appContainer' style={style}>
                 <header>
                     <h1>acryline</h1>
                 </header>
-                <NavBar handleApply={this.handleApplyClick}/>
-                <MobileNav />
+                <NavBar handleApply={this.handleApplyClick} handleMobileMenu={this.handleMobileMenu}/>
+                <MobileNav propList={mobileNavProp} />
                 <main>
-                    <UpperContainer filterList={this.state.filterList} handleAddFilter={this.handleAddFilter} handleSearch={this.handleUpdateQuery}
-                    searchQuery={this.state.searchQuery} handleLock={this.handleUpdateLock} handleRemoveFilter={this.handleRemoveFilter}
-                    selectedPalette={this.state.selectedPalette} />
-                    <p id="error" role="alert"></p>
+                    <UpperContainer propList={upperContainerProp} />
+                    <ShowError msg={this.state.error}/>
                     <NumberOfResult nResult={this.state.nFiltered} />
-                    <CardContainer filteredData={this.state.filteredPalettes} handleClick={this.handleSelectPalette} 
-                    handleResetLock={this.handleResetLock}/>
+                    <CardContainer propList={cardContainerProp} />
                 </main>
-                <SelectedPanel selected={this.state.selected} palette={this.state.selectedPalette} handleLock={this.handleUpdateLock} 
-                lockStatus={this.state.lockStatus} />
+                <SelectedPanel propList={selectedPanelProp} />
                 <Footer />
             </div>
         );
@@ -152,8 +172,8 @@ class NavBar extends Component {
     render() {
         return (
             <nav>
-                <NavTabs  handleApply={this.props.handleApply}/>
-                <div className='hamburger-menu'>
+                <NavTabs handleApply={this.props.handleApply}/>
+                <div className='hamburger-menu' onClick={this.props.handleMobileMenu}>
                     <div id='menu-unclicked'>
                         <FontAwesomeIcon icon={faBars} className='fa-bars' aria-label='menu' />
                     </div>
@@ -165,16 +185,21 @@ class NavBar extends Component {
 
 class MobileNav extends Component {
     render() {
-        return (
-            <aside>
-                <div className='hamburger-menu'>
-                    <div id='menu-clicked'>
-                        <FontAwesomeIcon icon={faBars} className='fa-bars' aria-label='menu' />
-                    </div>
-                </div>
-                <NavTabs />
-            </aside>
-        );
+        let menu;
+        if (this.props.propList.mobileMenuOn) {
+            menu = (<aside>
+                        <div className='hamburger-menu' onClick={this.props.propList.handleMobileMenu}>
+                            <div id='menu-clicked'>
+                                <FontAwesomeIcon icon={faBars} className='fa-bars' aria-label='menu' />
+                            </div>
+                        </div>
+                        <NavTabs handleApply={this.props.propList.handleApply}/>
+                    </aside>);
+        } else {
+            menu = <div></div>;
+        }
+
+        return menu;
     }
 }
 
@@ -193,28 +218,50 @@ class NavTabs extends Component {
 
 class UpperContainer extends Component {
     render() {
-        return (
+        let searchBoxProp = {handleAddFilter: this.props.propList.handleAddFilter, handleSearch: this.props.propList.handleSearch, 
+            searchQuery: this.props.propList.searchQuery, handleLock: this.props.propList.handleLock, selectedPalette: this.props.propList.selectedPalette, 
+            filterList: this.props.propList.filterList, handleError: this.props.propList.handleError}
+        
+        let filterContainerProp = {filterList: this.props.propList.filterList, handleLock: this.props.propList.handleLock, 
+            handleRemoveFilter: this.props.propList.handleRemoveFilter, selectedPalette: this.props.propList.selectedPalette}
+        
+            return (
             <section id="uppercontainer">
                 <h2>Explore Other Creations</h2>
                 <div id="searchcontainer">
-                    <SearchBox handleAddFilter={this.props.handleAddFilter} handleSearch={this.props.handleSearch} 
-                    searchQuery={this.props.searchQuery} handleLock={this.props.handleLock} selectedPalette={this.props.selectedPalette}/>
-                    <FilterContainer filterList={this.props.filterList} handleLock={this.props.handleLock} 
-                    handleRemoveFilter={this.props.handleRemoveFilter} selectedPalette={this.props.selectedPalette}/>
+                    <SearchBox propList={searchBoxProp} />
+                    <FilterContainer propList={filterContainerProp} />
                 </div>
             </section>
         );
     }
 }
 
+class ShowError extends Component {
+    render() {
+
+        return (
+            <div>
+                {this.props.msg != '' &&
+                    <p id="error" role="alert">{this.props.msg}</p>
+                }
+            </div>
+        );
+    }
+}
+
 class SelectedPanel extends Component {
     render() {
-        if (this.props.selected) {
+        if (this.props.propList.selected) {
             let optionLabels = [{id: 1, color: 'light shade'}, {id: 2, color: 'light accent'}, {id: 3, color: 'main color'},
             {id: 4, color: 'dark accent'}, {id: 5, color: 'dark shade'}];
-            let optionContainers = optionLabels.map(x => <OptionContainer label={x} key={'option' + x.id} palette={this.props.palette} 
-            handleLock={this.props.handleLock} locked={this.props.lockStatus[x.id - 1]}/>);
-            let selectedPalette = optionLabels.map(x => <SelectedPalette colorId={x.id} key={'color' + x.id} palette={this.props.palette} />);
+
+            let optionContainerProp = {palette: this.props.propList.palette, handleLock: this.props.propList.handleLock};
+            let optionContainers = optionLabels.map(x => <OptionContainer label={x} key={'option' + x.id} propList={optionContainerProp}
+                locked={this.props.propList.lockStatus[x.id - 1]} />);
+
+            let selectedPalette = optionLabels.map(x => <SelectedPalette colorId={x.id} key={'color' + x.id} 
+                palette={this.props.propList.palette} />);
             return (
                 <div id="selectedpanel">
                     <div id="selectedpalette" aria-label="selected palette">
@@ -243,8 +290,8 @@ class SelectedPalette extends Component {
 
 class OptionContainer extends Component {
     handleClick = () => {
-        let filter = convert.hex.keyword(this.props.palette[this.props.label.id - 1]);
-        this.props.handleLock(filter, this.props.label.id - 1);
+        let filter = convert.hex.keyword(this.props.propList.palette[this.props.label.id - 1]);
+        this.props.propList.handleLock(filter, this.props.label.id - 1);
     }
 
     render() {
@@ -252,11 +299,11 @@ class OptionContainer extends Component {
         if (this.props.locked) {
             className += ' locked';
         }
-        
+
         return (
             <div className="optioncontainer">
                 <p className="hex" aria-label={'selected ' + this.props.label.color} aria-live="polite">
-                    {this.props.palette[this.props.label.id - 1]}
+                    {this.props.propList.palette[this.props.label.id - 1]}
                 </p>
                 <button className={className} id={'lock' + this.props.label.id} aria-label="color lock" aria-pressed="true" 
                 onClick={this.handleClick}>
@@ -281,8 +328,8 @@ class Footer extends Component {
 
 class CardContainer extends Component {
     render() {
-        let paletteCards = this.props.filteredData.map(x => <PaletteCard palette={x} handleSelectPalette={this.props.handleClick} 
-            handleResetLock={this.props.handleResetLock}/>)
+        let paletteCards = this.props.propList.filteredData.map(x => <PaletteCard palette={x} handleSelectPalette={this.props.propList.handleClick} 
+            handleResetLock={this.props.propList.handleResetLock}/>)
 
         return (
             <section id="cardcontainer">
@@ -340,19 +387,24 @@ class NumberOfResult extends Component {
 
 class SearchBox extends Component {
     trackInput = (e) => {
-        this.props.handleSearch(e.target.value)
+        this.props.propList.handleSearch(e.target.value);
     }
 
     handleClick = (e) => {
         e.preventDefault();
-        let filter = this.props.searchQuery;
-        
-        let selectedColorNames = this.props.selectedPalette.map(x => convert.hex.keyword(x));
-        let lockId = selectedColorNames.indexOf(filter);
-        if (lockId != -1) {
-            this.props.handleLock(filter, lockId);
+        let filter = this.props.propList.searchQuery;
+
+        if (this.props.propList.filterList.includes(filter)) {
+            this.props.propList.handleError('Already filtered!');
+            
+        } else {
+            let selectedColorNames = this.props.propList.selectedPalette.map(x => convert.hex.keyword(x));
+            let lockId = selectedColorNames.indexOf(filter);
+            if (lockId != -1) {
+                this.props.propList.handleLock(filter, lockId);
+            }
+            this.props.propList.handleAddFilter(filter);
         }
-        this.props.handleAddFilter(filter)
     }
 
     render() {
@@ -369,8 +421,10 @@ class SearchBox extends Component {
 
 class FilterContainer extends Component {
     render() {
-        let filters = this.props.filterList.map(x => <Filter filterText={x} handleLock={this.props.handleLock}
-        handleRemoveFilter={this.props.handleRemoveFilter} selectedPalette={this.props.selectedPalette}/>);
+        let filterProp = {handleLock: this.props.propList.handleLock, handleRemoveFilter: this.props.propList.handleRemoveFilter, 
+            selectedPalette: this.props.propList.selectedPalette};
+
+        let filters = this.props.propList.filterList.map(x => <Filter filterText={x} propList={filterProp}/>);
 
         return (
             <div id="filterContainer">
@@ -384,12 +438,13 @@ class Filter extends Component {
     handleClick = () => {
         let filter = this.props.filterText;
         
-        let selectedColorNames = this.props.selectedPalette.map(x => convert.hex.keyword(x));
+        let selectedColorNames = this.props.propList.selectedPalette.map(x => convert.hex.keyword(x));
+        
         let lockId = selectedColorNames.indexOf(filter);
         if (lockId != -1) {
-            this.props.handleLock(filter, lockId);
+            this.props.propList.handleLock(filter, lockId);
         }
-        this.props.handleRemoveFilter(filter);
+        this.props.propList.handleRemoveFilter(filter);
     }
 
     render() {
