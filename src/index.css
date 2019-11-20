@@ -86,7 +86,6 @@ address > a {
 }
 
 aside {
-    display: none;
     position: fixed;
     height: 100%;
     width: 100%;
@@ -97,7 +96,7 @@ aside {
     padding-top: 2.25rem;
 }
 
-aside > .navigate {
+aside > div > .navigate {
     display: block;
     padding: 1em .8em;
     font-size: 1.5rem;
@@ -197,7 +196,6 @@ h2 {
     padding: .5em;
     font-weight: 700;
     font-size: 1.2rem;
-    display: none;
 }
 
 #nPalettes {
