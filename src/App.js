@@ -46,9 +46,13 @@ export class App extends Component {
         
     }
 
+    handleApplyClick = () => {
+
+    }
+
     render() {
         return (
-            <div>
+            <div className='appContainer'>
                 <header>
                     <h1>acryline</h1>
                 </header>
