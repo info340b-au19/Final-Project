@@ -48,7 +48,7 @@ export class App extends Component {
         }
     }
 
-    addFilter = (filter) => {
+    handleAddFilter = (filter) => {
         if (!this.state.filterList.includes(filter)) {
 
             let filters = this.state.filterList;
@@ -66,7 +66,7 @@ export class App extends Component {
         }
     }
 
-    removeFilter = (filter) => {
+    handleRemoveFilter = (filter) => {
         let list = this.state.filterList.filter((data) => {
             return data != filter;
         })
@@ -89,7 +89,7 @@ export class App extends Component {
         });
     }
 
-    updateLock = (filter, lockId) => {
+    handleUpdateLock = (filter, lockId) => {
         let currLockStatus = this.state.lockStatus;
         
         let selectedColorNames = this.state.selectedPalette.map(x => convert.hex.keyword(x));
@@ -100,15 +100,19 @@ export class App extends Component {
             }
         }
         if (currLockStatus[lockId]) {
-            this.addFilter(filter);
+            this.handleAddFilter(filter);
         } else {
-            this.removeFilter(filter);
+            this.handleRemoveFilter(filter);
         }
         
         this.setState({ lockStatus: currLockStatus });
     }
 
-    updateQuery = (input) => {
+    handleResetLock = () => {
+        this.setState({ lockStatus: [false, false, false, false, false] });
+    }
+
+    handleUpdateQuery = (input) => {
         let cleanedInput = input.toLowerCase().replace(/\s+/g, '');
         this.setState({ searchQuery: cleanedInput });
     }
@@ -126,14 +130,15 @@ export class App extends Component {
                 <NavBar handleApply={this.handleApplyClick}/>
                 <MobileNav />
                 <main>
-                    <UpperContainer filterList={this.state.filterList} handleAddFilter={this.addFilter} handleSearch={this.updateQuery}
-                    searchQuery={this.state.searchQuery} handleLock={this.updateLock} handleRemoveFilter={this.removeFilter}
+                    <UpperContainer filterList={this.state.filterList} handleAddFilter={this.handleAddFilter} handleSearch={this.handleUpdateQuery}
+                    searchQuery={this.state.searchQuery} handleLock={this.handleUpdateLock} handleRemoveFilter={this.handleRemoveFilter}
                     selectedPalette={this.state.selectedPalette} />
                     <p id="error" role="alert"></p>
                     <NumberOfResult nResult={this.state.nFiltered} />
-                    <CardContainer filteredData={this.state.filteredPalettes} handleClick={this.handleSelectPalette} />
+                    <CardContainer filteredData={this.state.filteredPalettes} handleClick={this.handleSelectPalette} 
+                    handleResetLock={this.handleResetLock}/>
                 </main>
-                <SelectedPanel selected={this.state.selected} palette={this.state.selectedPalette} handleLock={this.updateLock} 
+                <SelectedPanel selected={this.state.selected} palette={this.state.selectedPalette} handleLock={this.handleUpdateLock} 
                 lockStatus={this.state.lockStatus} />
                 <Footer />
             </div>
@@ -276,7 +281,8 @@ class Footer extends Component {
 
 class CardContainer extends Component {
     render() {
-        let paletteCards = this.props.filteredData.map(x => <PaletteCard palette={x} handleSelectPalette={this.props.handleClick} />)
+        let paletteCards = this.props.filteredData.map(x => <PaletteCard palette={x} handleSelectPalette={this.props.handleClick} 
+            handleResetLock={this.props.handleResetLock}/>)
 
         return (
             <section id="cardcontainer">
@@ -290,6 +296,7 @@ class PaletteCard extends Component {
     handleClick = () => {
         let colors = [this.props.palette.light_shade, this.props.palette.light_accent, this.props.palette.main, 
             this.props.palette.dark_accent, this.props.palette.dark_shade];
+        this.props.handleResetLock();
         this.props.handleSelectPalette(colors);
     }
 
