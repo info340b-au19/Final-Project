@@ -8,18 +8,22 @@ import * as d3 from 'd3';
 import palettesData from './palettes.csv';
 import colorNameData from './color_names.csv';
 import * as convert from 'color-convert';
+//console.log(colorNameData);
+
 
 export class App extends Component {
     constructor(props) {
         super(props);
-        this.state = {palettes: [], colorNames: {hex: [], names:[]}/*unini yet */, filteredPalettes: [], nFiltered: 0, selected: false,
+        this.state = {palettes: [], /*colorNames: {hex: [], names:[]}/*unini yet */filteredPalettes: [], nFiltered: 0, selected: false,
         selectedPalette: [], lockStatus: []/*unini yet */, filter: []/*unini yet */, selectedColor: {hex: [], names:[]}/*get the hex codes and names of current palette colors, merge with other 
         state if necessary unini yet*/};
     }
 
     componentDidMount() {
         d3.csv(colorNameData, (colorNameData) => {
+            //console.log(colorNameData);
             this.setState(state => {
+                //console.log(colorNameData.color_name+' '+colorNameData.hex);
                 let data = state.colorNames.push(colorNameData);
                 return data;
             });
@@ -50,7 +54,7 @@ export class App extends Component {
     removeFilter(colorName) {
         let i;
         i = this.state.filter.indexOf(colorName);
-        let changes = { filter: filter.slice(i, 1)};
+        let changes = { filter: this.state.filter.slice(i, 1)};
         this.setState(changes);
     }
 
@@ -61,7 +65,7 @@ export class App extends Component {
         // if lockId is 0, the filter is not associated with a lock
         let lowerFilter = filter.toLowerCase();
         let checkedFilter = this.userOrColor(lowerFilter);
-        let filterChange = { filter: filter.push(checkedFilter)};
+        let filterChange = { filter: this.state.filter.push(checkedFilter)};
         this.setState(filterChange);
     }
 
