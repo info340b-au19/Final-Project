@@ -8,10 +8,15 @@ import {faPalette} from '@fortawesome/free-solid-svg-icons';
 import './index.css';
 import * as d3 from 'd3';
 import palettesData from './palettes.csv';
+<<<<<<< HEAD
 import * as convert from 'color-convert';
 //console.log(colorNameData);
 
+=======
+import * as convert from 'color-convert'; // for converting color values
+>>>>>>> 60a44f02d9cb4e15ce9708f08a69163b0fbfd676
 
+// main component
 export class App extends Component {
     constructor(props) {
         super(props);
@@ -20,6 +25,7 @@ export class App extends Component {
         filterList: [], lockStatus: [false, false, false, false, false], searchQuery: ''};
     }
 
+    // loads data
     componentDidMount() {
         d3.csv(palettesData, (palettesData) => {
             this.setState(state => {
@@ -38,6 +44,7 @@ export class App extends Component {
         });
     }
 
+    // shows the selected palette
     handleSelectPalette = (palette) => {
         
         this.setState({ selected: true });
@@ -45,12 +52,14 @@ export class App extends Component {
         
     }
 
+    // apply selected theme when apply tab is clicked
     handleApplyClick = () => {
         if (this.state.selected) {
             this.setState({ currentTheme: this.state.selectedPalette });
         }
     }
 
+    // adds new filter
     handleAddFilter = (filter) => {
         if (!this.state.filterList.includes(filter)) {
 
@@ -69,6 +78,7 @@ export class App extends Component {
         }
     }
 
+    // remove an existing filter
     handleRemoveFilter = (filter) => {
         let list = this.state.filterList.filter((data) => {
             return data != filter;
@@ -92,6 +102,7 @@ export class App extends Component {
         });
     }
 
+    // updates the color lock buttons
     handleUpdateLock = (filter, lockId) => {
         let currLockStatus = this.state.lockStatus;
         
@@ -111,15 +122,18 @@ export class App extends Component {
         this.setState({ lockStatus: currLockStatus });
     }
 
+    // resets the color lock buttons
     handleResetLock = () => {
         this.setState({ lockStatus: [false, false, false, false, false] });
     }
-
+    
+    // tracks the input in search box
     handleUpdateQuery = (input) => {
         let cleanedInput = input.toLowerCase().replace(/\s+/g, '');
         this.setState({ searchQuery: cleanedInput });
     }
 
+    // shows the error message
     handleError = (msg) => {
         
         this.setState({ error: msg });
@@ -128,6 +142,7 @@ export class App extends Component {
         }, 3000);
     }
 
+    // functionality for mobile menu (hamburger menu)
     handleMobileMenu = () => {
         let status = !this.state.mobileMenuOn;
         this.setState({ mobileMenuOn: status });
