@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import { ChromePicker } from 'react-color';
-import '../index.css';
+import './create.css';
+import firebase from "firebase/app";
+import 'firebase/database';
 
 export class Create extends Component {
     constructor(props) {
         super(props);
-        this.state = {currentColor: '#ff6f61', activeColor: [false, false, true, false, false], 
+        this.state = {currentColor: this.props.selectedPalette[2], activeColor: [false, false, true, false, false], 
             description: {type: 'Main Color', p1: 'This color shows the identity of your design.', 
                 p2: 'Look for a color that is both striking and easy on the eye.'}}
     }

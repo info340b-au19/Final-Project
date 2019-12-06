@@ -8,6 +8,7 @@
     "@fortawesome/react-fontawesome": "^0.1.7",
     "color-convert": "^2.0.1",
     "d3": "^5.14.1",
+    "firebase": "^7.5.1",
     "install": "^0.13.0",
     "react": "^16.12.0",
     "react-color": "^2.17.3",
