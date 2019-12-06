@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
+import {NavLink} from 'react-router-dom';
 
 export class NavBar extends Component {
     render() {
@@ -41,9 +42,9 @@ class NavTabs extends Component {
     render() {
         return (
             <div>
-                <div className='home navigate'>Home</div>
-                <div className='create navigate'>Create</div>
-                <div className='explore selectedtab navigate'>Explore</div>
+                <NavLink exact to='/' activeClassName='active' className='home navigate'>Home</NavLink>
+                <NavLink exact to='/create' activeClassName='active' className='create navigate'>Create</NavLink>
+                <NavLink exact to='/explore' activeClassName='active' className='explore navigate'>Explore</NavLink>
                 <div className='apply navigate' onClick={this.props.handleApply}>Apply</div>
             </div>
         );

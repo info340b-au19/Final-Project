@@ -1,22 +1,20 @@
 import React, { Component } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {faPalette} from '@fortawesome/free-solid-svg-icons';
 import './index.css';
 import * as d3 from 'd3';
 import palettesData from './palettes.csv';
 import * as convert from 'color-convert'; // for converting color values
 import {NavBar, MobileNav} from './navigate.js';
-import {UpperContainer, ShowError} from './explore/exploreUpper.js'
-import {SelectedPanel} from './explore/exploreSelected.js'
-import {NumberOfResult, CardContainer} from './explore/explorePalettes.js';
+import {Explore} from './explore/explore.js';
+import {Route, Switch, Link, Redirect} from 'react-router-dom';
+import {Create} from './create/create.js';
 
 // main component
 export class App extends Component {
     constructor(props) {
         super(props);
         this.state = {palettes: [], filteredPalettes: [], nFiltered: 0, selected: false, error: '', mobileMenuOn: false,
-        selectedPalette: [], currentTheme: ['#ffffff', '#818181', '#ff6f61', '#836e58', '#232326'], dataLoaded: false,
-        filterList: [], lockStatus: [false, false, false, false, false], searchQuery: ''};
+        selectedPalette: ['#ffffff', '#818181', '#ff6f61', '#836e58', '#232326'], currentTheme: ['#ffffff', '#818181', '#ff6f61', '#836e58', '#232326'], 
+        dataLoaded: false, filterList: [], lockStatus: [false, false, false, false, false], searchQuery: ''};
     }
 
     // loads data
@@ -40,16 +38,18 @@ export class App extends Component {
 
     // shows the selected palette
     handleSelectPalette = (palette) => {
-        
-        this.setState({ selected: true });
+        if (!this.state.selected) {
+            this.setState({selected: true});
+        }
         this.setState({ selectedPalette: palette });
-        
     }
 
     // apply selected theme when apply tab is clicked
     handleApplyClick = () => {
+        console.log('h');
+        
         if (this.state.selected) {
-            this.setState({ currentTheme: this.state.selectedPalette });
+            this.setState({ currentTheme: this.state.selectedPalette, selected: false });
         }
     }
 
@@ -59,7 +59,6 @@ export class App extends Component {
 
             let filters = this.state.filterList;
             filters.push(filter);
-            this.setState({ filterList: filters });
             
             let list = this.state.filteredPalettes.filter((palette) => {
                 
@@ -67,8 +66,7 @@ export class App extends Component {
                 convert.hex.keyword(palette.light_accent) == filter || convert.hex.keyword(palette.main) == filter ||
                 convert.hex.keyword(palette.dark_accent) == filter || convert.hex.keyword(palette.dark_shade) == filter);
             });
-            this.setState({ filteredPalettes: list });
-            this.setState({ nFiltered: list.length});
+            this.setState({ filteredPalettes: list , filterList: filters, nFiltered: list.length });
         }
     }
 
@@ -79,8 +77,7 @@ export class App extends Component {
         })
         this.setState({ filterList: list }, () => {
             if (this.state.filterList.length == 0) {
-                this.setState({ filteredPalettes: this.state.palettes });
-                this.setState({ nFiltered: this.state.palettes.length});
+                this.setState({ filteredPalettes: this.state.palettes, nFiltered: this.state.palettes.length });
             } else {
                 let list = this.state.palettes;
                 let filterList = this.state.filterList;
@@ -90,8 +87,7 @@ export class App extends Component {
                         filterList.includes(convert.hex.keyword(data.dark_accent)) || filterList.includes(convert.hex.keyword(data.dark_shade)));
                 });
                 
-                this.setState({ filteredPalettes: list });
-                this.setState({ nFiltered: list.length});
+                this.setState({ filteredPalettes: list , nFiltered: list.length});
             }
         });
     }
@@ -142,6 +138,12 @@ export class App extends Component {
         this.setState({ mobileMenuOn: status });
     }
 
+    handleCreateChange = (color, index) => {
+        let newSelectedPalette = this.state.selectedPalette;
+        newSelectedPalette[index] = color;
+        this.setState({selectedPalette: newSelectedPalette, selected: true});
+    }
+
     render() {
         let style = { '--lightShade': this.state.currentTheme[0], '--lightAccent': this.state.currentTheme[1], 
         '--mainColor': this.state.currentTheme[2], '--darkAccent': this.state.currentTheme[3], 
@@ -156,26 +158,25 @@ export class App extends Component {
 
         let selectedPanelProp = {selected: this.state.selected, palette: this.state.selectedPalette, handleLock: this.handleUpdateLock, 
             lockStatus: this.state.lockStatus}
-        
+
+        let exploreProps = {upperContainerProp: upperContainerProp, cardContainerProp: cardContainerProp, selectedPanelProp: selectedPanelProp,
+            error: this.state.error, nFiltered: this.state.nFiltered, dataLoaded: this.state.dataLoaded};
+    
         let mobileNavProp = {handleApply: this.handleApplyClick, mobileMenuOn: this.state.mobileMenuOn, handleMobileMenu: this.handleMobileMenu}
         return (
 
             <div className='appContainer' style={style}>
                 <header>
-                    <h1>acryline</h1>
+                    <Link exact to='/'><h1>acryline</h1></Link>
                 </header>
                 <NavBar handleApply={this.handleApplyClick} handleMobileMenu={this.handleMobileMenu}/>
                 <MobileNav propList={mobileNavProp} />
-                <main>
-                    <UpperContainer propList={upperContainerProp} />
-                    <ShowError msg={this.state.error}/>
-                    <NumberOfResult nResult={this.state.nFiltered} />
-                    {!this.state.dataLoaded &&
-                        <FontAwesomeIcon icon={faPalette} className='fa-palette' spin/>
-                    }
-                    <CardContainer propList={cardContainerProp} />
-                </main>
-                <SelectedPanel propList={selectedPanelProp} />
+                <Switch>
+                    <Route exact path='/' render={() => <main></main>}/>
+                    <Route path='/create' render={() => <Create selectedPalette={this.state.selectedPalette} handleCreateChange={this.handleCreateChange}/>}/>
+                    <Route path='/explore' render={() => <Explore propList={exploreProps}/>}/>
+                    <Redirect to='/'></Redirect>
+                </Switch>
                 <Footer />
             </div>
         );
@@ -189,8 +190,7 @@ class Footer extends Component {
         return (
             <footer>
                 <p>© 2019 Gunhyung Cho  |  Jiuzhou Zhao</p>
-                <address>Contact: <a href='mailto:ghcho@uw.edu'>ghcho@uw.edu</a> 
-                    |  <a href='mailto:jz73@uw.edu'>jz73@uw.edu</a></address>
+                <address>Contact: <a href='mailto:ghcho@uw.edu'>ghcho@uw.edu</a> |  <a href='mailto:jz73@uw.edu'>jz73@uw.edu</a></address>
             </footer>
         );
     }
