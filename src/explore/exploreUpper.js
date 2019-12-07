@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import * as convert from 'color-convert';
-import { FilterContainer } from './exploreFilter.js'
+import { FilterContainer } from './exploreFilter.js';
 
 export class UpperContainer extends Component {
     render() {
@@ -25,19 +25,6 @@ export class UpperContainer extends Component {
     }
 }
 
-export class ShowError extends Component {
-    render() {
-
-        return (
-            <div>
-                {this.props.msg != '' &&
-                    <p id="error" role="alert">{this.props.msg}</p>
-                }
-            </div>
-        );
-    }
-}
-
 class SearchBox extends Component {
     trackInput = (e) => {
         this.props.propList.handleSearch(e.target.value);
@@ -53,7 +40,7 @@ class SearchBox extends Component {
         } else {
             let selectedColorNames = this.props.propList.selectedPalette.map(x => convert.hex.keyword(x));
             let lockId = selectedColorNames.indexOf(filter);
-            if (lockId != -1) {
+            if (lockId !== -1) {
                 this.props.propList.handleLock(filter, lockId);
             }
             this.props.propList.handleAddFilter(filter);

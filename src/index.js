@@ -8,14 +8,14 @@ import 'firebase/database';
 
 
 var firebaseConfig = {
-apiKey: "AIzaSyBkE7lJjFLYEvHBFc2oydK7AmOJPxJ-X2U",
-authDomain: "acryline-5a75d.firebaseapp.com",
-databaseURL: "https://acryline-5a75d.firebaseio.com",
-projectId: "acryline-5a75d",
-storageBucket: "acryline-5a75d.appspot.com",
-messagingSenderId: "880187415378",
-appId: "1:880187415378:web:a12699d89f403c28e6b88b",
-measurementId: "G-D7JZ4MD06J"
+    apiKey: "AIzaSyBkE7lJjFLYEvHBFc2oydK7AmOJPxJ-X2U",
+    authDomain: "acryline-5a75d.firebaseapp.com",
+    databaseURL: "https://acryline-5a75d.firebaseio.com",
+    projectId: "acryline-5a75d",
+    storageBucket: "acryline-5a75d.appspot.com",
+    messagingSenderId: "880187415378",
+    appId: "1:880187415378:web:b9f3777ae68bd9b0e6b88b",
+    measurementId: "G-KQ3BS48F35"
 };
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);

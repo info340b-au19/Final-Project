@@ -26,7 +26,7 @@ class Filter extends Component {
         let selectedColorNames = this.props.propList.selectedPalette.map(x => convert.hex.keyword(x));
         
         let lockId = selectedColorNames.indexOf(filter);
-        if (lockId != -1) {
+        if (lockId !== -1) {
             this.props.propList.handleLock(filter, lockId);
         }
         this.props.propList.handleRemoveFilter(filter);

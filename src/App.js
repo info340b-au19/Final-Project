@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import './index.css';
-import {NavBar, MobileNav} from './navigate.js';
-import {Explore} from './explore/explore.js';
-import {Route, Switch, Link, Redirect} from 'react-router-dom';
-import {Create} from './create/create.js';
+import { NavBar, MobileNav } from './common/navigate.js';
+import { Explore } from './explore/explore.js';
+import { Route, Switch, Link, Redirect } from 'react-router-dom';
+import { Create } from './create/create.js';
 
 // main component
 export class App extends Component {
@@ -23,8 +23,6 @@ export class App extends Component {
 
     // apply selected theme when apply tab is clicked
     handleApplyClick = () => {
-        console.log('h');
-        
         if (this.state.selected) {
             this.setState({ currentTheme: this.state.selectedPalette, selected: false });
         }
@@ -77,6 +75,7 @@ class Footer extends Component {
     render() {
         return (
             <footer>
+                <p>Powered by <a href='https://casesandberg.github.io/react-color/'>React Color</a> | <a href='https://github.com/Qix-/color-convert#readme'>Color-Convert</a></p>
                 <p>© 2019 Gunhyung Cho  |  Jiuzhou Zhao</p>
                 <address>Contact: <a href='mailto:ghcho@uw.edu'>ghcho@uw.edu</a> |  <a href='mailto:jz73@uw.edu'>jz73@uw.edu</a></address>
             </footer>

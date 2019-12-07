@@ -103,18 +103,6 @@
     padding: .5em 0em 5em 0em;
 }
 
-#error {
-    text-align: center;
-    color: var(--lightShade);
-    background-color: var(--lightAccent);
-    border-radius: 10px;
-    width: 80%;
-    margin: 0.5em auto;
-    padding: .5em;
-    font-weight: 700;
-    font-size: 1.2rem;
-}
-
 #nPalettes {
     width: 95%;
     text-align: right;

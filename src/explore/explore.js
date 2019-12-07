@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import {UpperContainer, ShowError} from './exploreUpper.js';
-import {SelectedPanel} from './exploreSelected.js';
-import {NumberOfResult, CardContainer} from './explorePalettes.js';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {faPalette} from '@fortawesome/free-solid-svg-icons';
+import { UpperContainer } from './exploreUpper.js';
+import { SelectedPanel } from './exploreSelected.js';
+import { NumberOfResult, CardContainer } from './explorePalettes.js';
+import { Spinner } from '../common/spinner.js';
+import { AlertBox } from '../common/alertBox.js';
 import * as convert from 'color-convert'; // for converting color values
 import firebase from "firebase/app";
 import 'firebase/database';
@@ -19,10 +19,16 @@ export class Explore extends Component {
     componentDidMount() {
         this.palettesRef = firebase.database().ref('palettes');
         this.palettesRef.on('value', (snapshot => {
-            this.setState({palettes: snapshot.val(), filteredPalettes: snapshot.val(), nFiltered: snapshot.val().length, dataLoaded: true});
+            
+            let palettesList = Object.keys(snapshot.val());
+            palettesList = palettesList.map((key) => {
+                let paletteObj = snapshot.val()[key];
+                paletteObj['id'] = key;
+                return paletteObj;
+            })
+            
+            this.setState({palettes: palettesList, filteredPalettes: palettesList, nFiltered: palettesList.length, dataLoaded: true});
         }));
-        console.log(this.props);
-        
     }
 
     componentWillUnmount() {
@@ -38,9 +44,9 @@ export class Explore extends Component {
             
             let list = this.state.filteredPalettes.filter((palette) => {
                 
-                return (palette.username == filter || convert.hex.keyword(palette.light_shade) == filter || 
-                convert.hex.keyword(palette.light_accent) == filter || convert.hex.keyword(palette.main) == filter ||
-                convert.hex.keyword(palette.dark_accent) == filter || convert.hex.keyword(palette.dark_shade) == filter);
+                return (palette.username === filter || convert.hex.keyword(palette.light_shade) === filter || 
+                convert.hex.keyword(palette.light_accent) === filter || convert.hex.keyword(palette.main) === filter ||
+                convert.hex.keyword(palette.dark_accent) === filter || convert.hex.keyword(palette.dark_shade) === filter);
             });
             this.setState({ filteredPalettes: list , filterList: filters, nFiltered: list.length });
         }
@@ -49,10 +55,10 @@ export class Explore extends Component {
     // remove an existing filter
     handleRemoveFilter = (filter) => {
         let list = this.state.filterList.filter((data) => {
-            return data != filter;
+            return data !== filter;
         })
         this.setState({ filterList: list }, () => {
-            if (this.state.filterList.length == 0) {
+            if (this.state.filterList.length === 0) {
                 this.setState({ filteredPalettes: this.state.palettes, nFiltered: this.state.palettes.length });
             } else {
                 let list = this.state.palettes;
@@ -75,7 +81,7 @@ export class Explore extends Component {
         let selectedColorNames = this.props.propList.selectedPalette.map(x => convert.hex.keyword(x));
         let lockColor = selectedColorNames[lockId];
         for (let i = 0; i < 5; i++) {
-            if (lockColor == selectedColorNames[i]) {
+            if (lockColor === selectedColorNames[i]) {
                 currLockStatus[i] = !currLockStatus[i];
             }
         }
@@ -101,7 +107,6 @@ export class Explore extends Component {
 
     // shows the error message
     handleError = (msg) => {
-        
         this.setState({ error: msg });
         setTimeout(() => {
             this.setState({ error: '' });
@@ -109,6 +114,7 @@ export class Explore extends Component {
     }
 
     render() {
+
         let upperContainerProp = {filterList: this.state.filterList, handleAddFilter: this.handleAddFilter, handleSearch: this.handleUpdateQuery,
             searchQuery: this.state.searchQuery, handleLock: this.handleUpdateLock, handleRemoveFilter: this.handleRemoveFilter,
             selectedPalette: this.props.propList.selectedPalette, handleError: this.handleError};
@@ -122,11 +128,9 @@ export class Explore extends Component {
         return (
             <main>
                 <UpperContainer propList={upperContainerProp} />
-                <ShowError msg={this.state.error}/>
+                <AlertBox msg={this.state.error}/>
                 <NumberOfResult nResult={this.state.nFiltered} />
-                {!this.state.dataLoaded &&
-                    <FontAwesomeIcon icon={faPalette} className='fa-palette' spin/>
-                }
+                {!this.state.dataLoaded && <Spinner />}
                 <CardContainer propList={cardContainerProp} />
                 <SelectedPanel propList={selectedPanelProp} />
             </main>
