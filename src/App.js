@@ -8,13 +8,9 @@ import {faPalette} from '@fortawesome/free-solid-svg-icons';
 import './index.css';
 import * as d3 from 'd3';
 import palettesData from './palettes.csv';
-<<<<<<< HEAD
-import * as convert from 'color-convert';
-//console.log(colorNameData);
-
-=======
+import FrontPage from './Front';
 import * as convert from 'color-convert'; // for converting color values
->>>>>>> 60a44f02d9cb4e15ce9708f08a69163b0fbfd676
+import {Route, Link, Switch, NavLink, Redirect} from 'react-router-dom';
 
 // main component
 export class App extends Component {
@@ -165,14 +161,21 @@ export class App extends Component {
         
         let mobileNavProp = {handleApply: this.handleApplyClick, mobileMenuOn: this.state.mobileMenuOn, handleMobileMenu: this.handleMobileMenu}
         return (
-
-            <div className='appContainer' style={style}>
+            <div className='appContainer' id="bootstrap-override" style={style}>
                 <header>
-                    <h1>acryline</h1>
+                    <Link to='/'><h1>acryline</h1></Link>
                 </header>
                 <NavBar handleApply={this.handleApplyClick} handleMobileMenu={this.handleMobileMenu}/>
                 <MobileNav propList={mobileNavProp} />
-                <main>
+                {/*below part should be included into one route */}
+                <Switch>
+                    <Route exact path='/' component={FrontPage} />
+                    <Route path='/explore' render={(routerProps) => (
+                    <SearchAndResults {...routerProps} errMessage={this.state.error} upperContainerPropList={upperContainerProp} nResult={this.state.nFiltered} cardContainerPropList={cardContainerProp} loadStatus={this.state.dataLoaded}/>
+                    )} />
+                    <Redirect to='/' />
+                </Switch>    
+                {/*<main>
                     <UpperContainer propList={upperContainerProp} />
                     <ShowError msg={this.state.error}/>
                     <NumberOfResult nResult={this.state.nFiltered} />
@@ -180,7 +183,8 @@ export class App extends Component {
                         <FontAwesomeIcon icon={faPalette} className='fa-palette' spin/>
                     }
                     <CardContainer propList={cardContainerProp} />
-                </main>
+                </main>*/}
+                {/*abv part should be included into one route */}
                 <SelectedPanel propList={selectedPanelProp} />
                 <Footer />
             </div>
@@ -189,6 +193,29 @@ export class App extends Component {
 }
 
 export default App;
+
+
+class SearchAndResults extends Component {
+    render() {
+        let errMessage = this.props.errMessage;
+        //let propList = this.props.propList;
+        let upperContainerPropList = this.props.upperContainerPropList;
+        let cardContainerPropList = this.props.cardContainerPropList;
+        let nResult = this.props.nResult;
+        let isloaded = this.props.loadStatus;
+        return (
+            <div>
+                <UpperContainer propList={upperContainerPropList} />
+                <ShowError msg={errMessage}/>
+                <NumberOfResult nResult={nResult} />
+                {!isloaded &&
+                    <FontAwesomeIcon icon={faPalette} className='fa-palette' spin/>
+                }
+                <CardContainer propList={cardContainerPropList} />
+            </div>
+        )
+    }  
+}
 
 class NavBar extends Component {
     render() {
@@ -229,9 +256,9 @@ class NavTabs extends Component {
     render() {
         return (
             <div>
-                <div className='home navigate'>Home</div>
-                <div className='create navigate'>Create</div>
-                <div className='explore selectedtab navigate'>Explore</div>
+                <div className='home navigate'><NavLink exact to="/" className="navigate" activeClassName='selectedtab'>Home</NavLink></div>
+                <div className='create navigate'><NavLink exact to="/create" className="navigate" activeClassName='selectedtab'>Create</NavLink></div>
+                <div className='explore navigate'><NavLink exact to="/explore" className="navigate" activeClassName='selectedtab'>Explore</NavLink></div>
                 <div className='apply navigate' onClick={this.props.handleApply}>Apply</div>
             </div>
         );
