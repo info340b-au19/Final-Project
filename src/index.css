@@ -182,13 +182,15 @@ div h3.desc_right, div h4.desc_right {
 
 #tutorial_container h3{
     color: #A0A0A0;
-    position: absolute;
+    position: relative;
     font-size: 3rem;
     font-family: "Verdana","Garamond","Helvetica Neue","Helvetica","Arial",sans-serif;
     left: 1%;
+    right: 90%;
+    margin-right: 40%;
     margin-left: 1px;
-    bottom: 100%;
-    margin-bottom: 90%;
+    bottom: 10%;
+    margin-bottom: 10%;
 }
 
 #tutorial_container h3:first-of-type {    /* For increasing performance 
@@ -205,10 +207,10 @@ animation: showup 17s infinite;
 
 #tutorial_container p{
     color: rgb(190, 187, 187);
-    position: absolute;
+    position: relative;
     font-size: 1.1rem;
     font-family: "Arial Black";
-    left: 50%;
+    left: 10%;
     margin-left: 1px;
     bottom: 100%;
     margin-bottom: 80%;
@@ -330,7 +332,48 @@ footer > p > a {
     text-decoration: underline;
 }
 
+
 @media (min-width: 600px) {
+
+    #control_slides .carousel-item:nth-child(1) img {
+        /*background: url('img_small/create_3_small.jpg') no-repeat;*/
+        content:url('img_small/create_3_small.jpg');
+    }
+
+    #control_slides .carousel-item:nth-child(2) img {
+        /*background: url('img_small/com_3_small.jpg') no-repeat;*/
+        content:url('img_small/com_3_small.jpg');
+    }
+
+    #control_slides .carousel-item:nth-child(3) img {
+        /*background: url('img_small/apply_3_small.jpg') no-repeat;*/
+        content:url('img_small/apply_3_small.jpg');
+    }
+
+    #tutorial_container h3{
+        color: #A0A0A0;
+        position: relative;
+        font-size: 3rem;
+        font-family: "Verdana","Garamond","Helvetica Neue","Helvetica","Arial",sans-serif;
+        left: 1%;
+        right: 90%;
+        margin-right: 40%;
+        margin-left: 1px;
+        bottom: 10%;
+        margin-bottom: 10%;
+    }
+
+    #tutorial_container p{
+        color: rgb(190, 187, 187);
+        position: relative;
+        font-size: 1.5rem;
+        font-family: "Arial Black";
+        left: 10%;
+        margin-left: 1px;
+        bottom: 100%;
+        margin-bottom: 80%;
+    }
+
     .hamburger-menu {
         display: none;
     }
@@ -352,12 +395,52 @@ footer > p > a {
 
     div h3 {
         margin: 1em;
-        font-size: 10px;
         color: #aaaaaa;
     }
 }
 
 @media (min-width: 900px) {
+
+    #control_slides .carousel-item:nth-child(1) img {
+        /*background: url('img_small/create_3_small.jpg') no-repeat;*/
+        content:url('img_small/create_3.jpg');
+    }
+
+    #control_slides .carousel-item:nth-child(2) img {
+        /*background: url('img_small/com_3_small.jpg') no-repeat;*/
+        content:url('img_small/com_3.jpg');
+    }
+
+    #control_slides .carousel-item:nth-child(3) img {
+        /*background: url('img_small/apply_3_small.jpg') no-repeat;*/
+        content:url('img_small/apply_3.jpg');
+    }
+    
+
+    #tutorial_container h3{
+        color: #A0A0A0;
+        position: absolute;
+        font-size: auto;
+        font-family: "Verdana","Garamond","Helvetica Neue","Helvetica","Arial",sans-serif;
+        left: 1%;
+        right: 90%;
+        margin-right: 40%;
+        margin-left: 1px;
+        bottom: 10%;
+        margin-bottom: 10%;
+    }
+
+    #tutorial_container p{
+        color: rgb(190, 187, 187);
+        position: relative;
+        font-size: auto;
+        font-family: "Arial Black";
+        left: 10%;
+        margin-left: 1px;
+        bottom: 100%;
+        margin-bottom: 80%;
+    }
+    
     h1 {
         font-size: 2.5rem;
     }
@@ -384,6 +467,31 @@ footer > p > a {
 }
 
 @media (min-width: 1200px) {
+
+    #tutorial_container h3{
+        color: #A0A0A0;
+        position: absolute;
+        font-size: auto;
+        font-family: "Verdana","Garamond","Helvetica Neue","Helvetica","Arial",sans-serif;
+        left: 1%;
+        right: 90%;
+        margin-right: 40%;
+        margin-left: 1px;
+        bottom: 10%;
+        margin-bottom: 10%;
+    }
+
+    #tutorial_container p{
+        color: rgb(190, 187, 187);
+        position: relative;
+        font-size: auto;
+        font-family: "Arial Black";
+        left: 10%;
+        margin-left: 1px;
+        bottom: 100%;
+        margin-bottom: 80%;
+    }
+
     .navigate{
         font-size: 1rem;
     }
@@ -424,6 +532,32 @@ footer > p > a {
 }
 
 @media (min-width: 1500px) {
+
+    #tutorial_container h3{
+        color: #A0A0A0;
+        position: absolute;
+        font-size: auto;
+        font-family: "Verdana","Garamond","Helvetica Neue","Helvetica","Arial",sans-serif;
+        left: 1%;
+        right: 90%;
+        margin-right: 40%;
+        margin-left: 1px;
+        bottom: 10%;
+        margin-bottom: 10%;
+    }
+
+    #tutorial_container p{
+        color: rgb(190, 187, 187);
+        position: relative;
+        font-size: auto;
+        font-family: "Arial Black";
+        left: 10%;
+        margin-left: 1px;
+        bottom: 100%;
+        margin-bottom: 80%;
+    }
+
+
     .hex {
         font-size: 1.5rem;
     }

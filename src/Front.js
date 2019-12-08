@@ -27,6 +27,7 @@ export default class FrontPage extends Component {
                 items={carouselItems} 
                 indicators={false}
                 controls={true}
+                autoPlay={false}
                 />
                 </div>
             </div>
