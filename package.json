@@ -8,8 +8,10 @@
     "@fortawesome/react-fontawesome": "^0.1.7",
     "color-convert": "^2.0.1",
     "d3": "^5.14.1",
+    "firebase": "^7.5.2",
     "install": "^0.13.0",
     "react": "^16.12.0",
+    "react-color": "^2.17.3",
     "react-csv-reader": "^2.0.2",
     "react-d3-library": "^1.1.8",
     "react-dom": "^16.12.0",
@@ -17,7 +19,7 @@
     "react-papaparse": "^1.0.5",
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.2.0",
-    "reactstrap": "^8.1.1",
+    "reactstrap": "^8.2.0",
     "to": "^0.2.9"
   },
   "scripts": {
