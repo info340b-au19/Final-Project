@@ -333,6 +333,76 @@ footer > p > a {
 }
 
 
+@media (min-width: 200px) {
+
+    #control_slides .carousel-item:nth-child(1) img {
+        /*background: url('img_small/create_3_small.jpg') no-repeat;*/
+        content:url('img_small/create_3_small.jpg');
+    }
+
+    #control_slides .carousel-item:nth-child(2) img {
+        /*background: url('img_small/com_3_small.jpg') no-repeat;*/
+        content:url('img_small/com_3_small.jpg');
+    }
+
+    #control_slides .carousel-item:nth-child(3) img {
+        /*background: url('img_small/apply_3_small.jpg') no-repeat;*/
+        content:url('img_small/apply_3_small.jpg');
+    }
+
+    #tutorial_container h3{
+        color: #A0A0A0;
+        position: relative;
+        font-size: 3rem;
+        font-family: "Verdana","Garamond","Helvetica Neue","Helvetica","Arial",sans-serif;
+        left: 1%;
+        right: 90%;
+        margin-right: 40%;
+        margin-left: 1px;
+        bottom: 10%;
+        margin-bottom: 10%;
+    }
+
+    #tutorial_container p{
+        color: rgb(190, 187, 187);
+        position: relative;
+        font-size: 1.5rem;
+        font-family: "Arial Black";
+        left: 10%;
+        margin-left: 1px;
+        bottom: 100%;
+        margin-bottom: 80%;
+    }
+
+    .hamburger-menu {
+        display: none;
+    }
+
+    .navigate {
+        display: inline-block;
+        padding: .75em;
+        height: 100%;
+    }
+
+    #cardcontainer {
+        margin: 0 1em;
+        padding: .5em 1em 5em 1em;
+    }
+
+    .holder {
+        height: 40px;
+    }
+
+    div h3 {
+        margin: 1em;
+        color: #aaaaaa;
+    }
+}
+
+
+
+
+
 @media (min-width: 600px) {
 
     #control_slides .carousel-item:nth-child(1) img {
@@ -416,6 +486,12 @@ footer > p > a {
         content:url('img_small/apply_3.jpg');
     }
     
+
+
+    .front_h3 {
+        font-size: 40px;
+    }
+
 
     #tutorial_container h3{
         color: #A0A0A0;
