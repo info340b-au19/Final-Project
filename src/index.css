@@ -1,6 +1,4 @@
-@import url('https://fonts.googleapis.com/css?family=Roboto:300');
-
-body, .appContainer, h1, .filter > p, .color, .hex, .lock, footer {
+body, .appContainer, h1, footer {
     margin: 0;
 }
 
@@ -24,7 +22,7 @@ header, nav {
     margin: 0 auto;
 }
 
-h1, h2, #searchinput, #bootstrap-override h1 {
+h1, h2 {
     color: var(--mainColor);
 }
 
@@ -32,18 +30,15 @@ h1, main {
     background-color: var(--lightShade);
 }
 
-h1, #bootstrap-override h1 {
+h1 {
     padding-left: .5em;
     font-weight: 700;
     font-size: 1.5rem;
     padding-bottom: 5px;
 }
 
-nav, #selectedpanel, .lock, #bootstrap-override nav {
+nav {
     background-color: var(--darkShade);
-}
-
-nav, #bootstrap-override nav {
     position: sticky;
     top: 0;
     box-shadow: 0 8px 6px -6px rgba(0, 0, 0, 0.2);
@@ -76,169 +71,6 @@ address > a {
 .active, footer {
     background-color: var(--mainColor);
 }
-
-#control_slides .active {
-    background-color: unset;
-}
-
-
-#uppercontainer, #uppercontainer_front {
-    background-image: url("/img/explore.jpg");
-    background-size: cover;
-    background-attachment: fixed;
-    padding-bottom: 10em;
-}
-
-
-
-/*delete if crashes*/
-
-
-
-
-.front_h2 {
-    padding-top: 2em;
-    margin: auto;
-    text-align: center;
-    font-size: 4rem;
-    padding-top: 1em;
-    text-shadow: 1px 1px 2px #232326;
-    color: var(--mainColor);
-}
-
-.front_h3 {
-    margin: auto;
-    padding-top: 1em;
-    text-align: center;
-    text-shadow: 1px 1px 2px #232326;
-    color: var(--mainColor);
-}
-
-.holder {
-    padding:10px 0;
-    position: relative;
-    border-bottom: 1px solid #e8edf2;
-    overflow: hidden;
-    width: 100%;
-    height: 140px;
-}
-/*
-.create, .com, .apply {
-    padding:10px 0;
-    position: relative;
-    border-bottom: 1px solid #e8edf2;
-    overflow: hidden;
-    width: 100%;
-}*/
-
-.pic_holder_1, .pic_holder_2, .pic_holder_3 {
-    height: 100%;
-    width: 30%;
-    position: absolute;    
-}
-
-.pic_holder_2 {
-    left: 0;
-}
-
-.pic_holder_1, .pic_holder_3 {
-    right: 0;
-}
-*/
-div .desc, div h4.desc, div .desc_right, div h4.desc_right {
-    float: left;
-    justify-content: center;
-    text-align: center;
-    padding: 3em;
-    position: relative;
-    margin: 3em;
-    color: #aaaaaa;
-}
-
-div h3.desc_right, div h4.desc_right {
-    float: right;
-}
-
-#tutorial_container img {
-    opacity: 0.85;
-}
-
-#uppercontainer_front {
-    background-image: url("/img/new_front.jpg");
-    padding-bottom: 0em;
-}
-
-/*
-#tutorial_container #carousel-caption:nth-child(2) h3, #tutorial_container #d-none:nth-child(2) h3, #tutorial_container #d-md-block:nth-child(2) h3{
-    color: rgba(230, 228, 228, 0.671);
-    position: absolute;
-    font-size: 1rem;
-    font-family: "Arial Black";
-    right: 1%;
-    margin-right: 1px;
-    bottom: 100%;
-    margin-bottom: 90%;
-}*/
-
-#tutorial_container h3{
-    color: #A0A0A0;
-    position: relative;
-    font-size: 3rem;
-    font-family: "Verdana","Garamond","Helvetica Neue","Helvetica","Arial",sans-serif;
-    left: 1%;
-    right: 90%;
-    margin-right: 40%;
-    margin-left: 1px;
-    bottom: 10%;
-    margin-bottom: 10%;
-}
-
-#tutorial_container h3:first-of-type {    /* For increasing performance 
-    ID/Class should've been used. 
-    For a small demo 
-    it's okaish for now */
-animation: showup 17s infinite;
-}
-
-#tutorial_container p:first-of-type {
-    margin-left:-355px;
-    animation: slidein 7s infinite;
-  }
-
-#tutorial_container p{
-    color: rgb(190, 187, 187);
-    position: relative;
-    font-size: 1.1rem;
-    font-family: "Arial Black";
-    left: 10%;
-    margin-left: 1px;
-    bottom: 100%;
-    margin-bottom: 80%;
-}
-
-@keyframes showup {
-    0% {opacity:0;}
-    20% {opacity:1;}
-    80% {opacity:1;}
-    100% {opacity:0;}
-}
-
-@keyframes slidein {
-    0% { margin-left:-800px; }
-    20% { margin-left:-800px; }
-    35% { margin-left:0px; }
-    100% { margin-left:0px; }
-}
-
-@keyframes reveal {
-    0% {opacity:0;width:0px;}
-    20% {opacity:1;width:0px;}
-    30% {width:355px;}
-    80% {opacity:1;}
-    100% {opacity:0;width:355px;}
-}
-
-
 
 aside {
     position: fixed;
@@ -281,18 +113,6 @@ h2 {
 
 #tutorial_container {
     flex-direction: column;
-    flex-wrap: wrap;
-    justify-content: center;
-    margin: 0;
-    padding: .5em 0em .5em 0em;
-    background-color: black;
-    
-}
-
-#tutorial_container {
-    flex-direction: column;
-    text-align: center;
-    justify-content: center;
 }
 
 #alert {
@@ -318,132 +138,11 @@ address {
     font-style: normal;
 }
 
-
-#control_slides {
-    width: 95%;
-    height: 95%;
-    position: relative;
-    padding-left: 92px;
-    padding-right: 28px;
-    /*float: inline-end;*/
-}
-
 footer > p > a {
     text-decoration: underline;
 }
 
-
-@media (min-width: 200px) {
-
-    #control_slides .carousel-item:nth-child(1) img {
-        /*background: url('img_small/create_3_small.jpg') no-repeat;*/
-        content:url('img_small/create_3_small.jpg');
-    }
-
-    #control_slides .carousel-item:nth-child(2) img {
-        /*background: url('img_small/com_3_small.jpg') no-repeat;*/
-        content:url('img_small/com_3_small.jpg');
-    }
-
-    #control_slides .carousel-item:nth-child(3) img {
-        /*background: url('img_small/apply_3_small.jpg') no-repeat;*/
-        content:url('img_small/apply_3_small.jpg');
-    }
-
-    #tutorial_container h3{
-        color: #A0A0A0;
-        position: relative;
-        font-size: 3rem;
-        font-family: "Verdana","Garamond","Helvetica Neue","Helvetica","Arial",sans-serif;
-        left: 1%;
-        right: 90%;
-        margin-right: 40%;
-        margin-left: 1px;
-        bottom: 10%;
-        margin-bottom: 10%;
-    }
-
-    #tutorial_container p{
-        color: rgb(190, 187, 187);
-        position: relative;
-        font-size: 1.5rem;
-        font-family: "Arial Black";
-        left: 10%;
-        margin-left: 1px;
-        bottom: 100%;
-        margin-bottom: 80%;
-    }
-
-    .hamburger-menu {
-        display: none;
-    }
-
-    .navigate {
-        display: inline-block;
-        padding: .75em;
-        height: 100%;
-    }
-
-    #cardcontainer {
-        margin: 0 1em;
-        padding: .5em 1em 5em 1em;
-    }
-
-    .holder {
-        height: 40px;
-    }
-
-    div h3 {
-        margin: 1em;
-        color: #aaaaaa;
-    }
-}
-
-
-
-
-
 @media (min-width: 600px) {
-
-    #control_slides .carousel-item:nth-child(1) img {
-        /*background: url('img_small/create_3_small.jpg') no-repeat;*/
-        content:url('img_small/create_3_small.jpg');
-    }
-
-    #control_slides .carousel-item:nth-child(2) img {
-        /*background: url('img_small/com_3_small.jpg') no-repeat;*/
-        content:url('img_small/com_3_small.jpg');
-    }
-
-    #control_slides .carousel-item:nth-child(3) img {
-        /*background: url('img_small/apply_3_small.jpg') no-repeat;*/
-        content:url('img_small/apply_3_small.jpg');
-    }
-
-    #tutorial_container h3{
-        color: #A0A0A0;
-        position: relative;
-        font-size: 3rem;
-        font-family: "Verdana","Garamond","Helvetica Neue","Helvetica","Arial",sans-serif;
-        left: 1%;
-        right: 90%;
-        margin-right: 40%;
-        margin-left: 1px;
-        bottom: 10%;
-        margin-bottom: 10%;
-    }
-
-    #tutorial_container p{
-        color: rgb(190, 187, 187);
-        position: relative;
-        font-size: 1.5rem;
-        font-family: "Arial Black";
-        left: 10%;
-        margin-left: 1px;
-        bottom: 100%;
-        margin-bottom: 80%;
-    }
-
     .hamburger-menu {
         display: none;
     }
@@ -452,71 +151,10 @@ footer > p > a {
         display: inline-block;
         padding: .75em;
         height: 100%;
-    }
-
-    #cardcontainer {
-        margin: 0 1em;
-        padding: .5em 1em 5em 1em;
-    }
-
-    .holder {
-        height: 40px;
-    }
-
-    div h3 {
-        margin: 1em;
-        color: #aaaaaa;
     }
 }
 
 @media (min-width: 900px) {
-
-    #control_slides .carousel-item:nth-child(1) img {
-        /*background: url('img_small/create_3_small.jpg') no-repeat;*/
-        content:url('img_small/create_3.jpg');
-    }
-
-    #control_slides .carousel-item:nth-child(2) img {
-        /*background: url('img_small/com_3_small.jpg') no-repeat;*/
-        content:url('img_small/com_3.jpg');
-    }
-
-    #control_slides .carousel-item:nth-child(3) img {
-        /*background: url('img_small/apply_3_small.jpg') no-repeat;*/
-        content:url('img_small/apply_3.jpg');
-    }
-    
-
-
-    .front_h3 {
-        font-size: 40px;
-    }
-
-
-    #tutorial_container h3{
-        color: #A0A0A0;
-        position: absolute;
-        font-size: auto;
-        font-family: "Verdana","Garamond","Helvetica Neue","Helvetica","Arial",sans-serif;
-        left: 1%;
-        right: 90%;
-        margin-right: 40%;
-        margin-left: 1px;
-        bottom: 10%;
-        margin-bottom: 10%;
-    }
-
-    #tutorial_container p{
-        color: rgb(190, 187, 187);
-        position: relative;
-        font-size: auto;
-        font-family: "Arial Black";
-        left: 10%;
-        margin-left: 1px;
-        bottom: 100%;
-        margin-bottom: 80%;
-    }
-    
     h1 {
         font-size: 2.5rem;
     }
@@ -529,127 +167,10 @@ footer > p > a {
         height: 120px;
         padding-top: 60px;
     }
-
-    .holder {
-        height: 40px;
-    }
-
-    div h3 {
-        margin: 1em;
-        font-size: 10px;
-        color: #aaaaaa;
-    }
-
 }
 
 @media (min-width: 1200px) {
-
-    #tutorial_container h3{
-        color: #A0A0A0;
-        position: absolute;
-        font-size: auto;
-        font-family: "Verdana","Garamond","Helvetica Neue","Helvetica","Arial",sans-serif;
-        left: 1%;
-        right: 90%;
-        margin-right: 40%;
-        margin-left: 1px;
-        bottom: 10%;
-        margin-bottom: 10%;
-    }
-
-    #tutorial_container p{
-        color: rgb(190, 187, 187);
-        position: relative;
-        font-size: auto;
-        font-family: "Arial Black";
-        left: 10%;
-        margin-left: 1px;
-        bottom: 100%;
-        margin-bottom: 80%;
-    }
-
     .navigate{
         font-size: 1rem;
     }
-    
-    .colorcontainer {
-        height: 100px;
-    }
-
-    .hex {
-        display: block;
-    }
-
-    .lock {
-        width: auto;
-        float: right;
-        margin-right: 5%;
-        font-size: 1.2rem;
-    }
-
-    .coloroption {
-        height: 50px;
-    }
-
-    #searchinput {
-        padding-left: 1em;
-        font-size: 1.3rem;
-    }
-
-    .holder {
-        height: 150px;
-    }
-
-    div h3 {
-        margin: 2em;
-        font-size: 25px;
-        color: #aaaaaa;
-    }
-}
-
-@media (min-width: 1500px) {
-
-    #tutorial_container h3{
-        color: #A0A0A0;
-        position: absolute;
-        font-size: auto;
-        font-family: "Verdana","Garamond","Helvetica Neue","Helvetica","Arial",sans-serif;
-        left: 1%;
-        right: 90%;
-        margin-right: 40%;
-        margin-left: 1px;
-        bottom: 10%;
-        margin-bottom: 10%;
-    }
-
-    #tutorial_container p{
-        color: rgb(190, 187, 187);
-        position: relative;
-        font-size: auto;
-        font-family: "Arial Black";
-        left: 10%;
-        margin-left: 1px;
-        bottom: 100%;
-        margin-bottom: 80%;
-    }
-
-
-    .hex {
-        font-size: 1.5rem;
-    }
-
-    .lock {
-        font-size: 1.5rem;
-    }
-
-    .holder {
-        height: 150px;
-    }
-
-    div h3 {
-        margin: 2em;
-        font-size: 25px;
-        color: #aaaaaa;
-    }
-
 }

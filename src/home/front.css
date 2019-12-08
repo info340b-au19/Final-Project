@@ -1,0 +1,134 @@
+.frontheader {
+    padding-bottom: 2.5em;
+}
+
+.tutorial {
+    border-top: solid 1px rgba(0,0,0,0.1);
+    padding: 3em 0;
+}
+
+.frontp {
+    font-size: 1.3rem;
+    font-weight: 700;
+    padding: 0em 2em;
+    text-align: right;
+}
+
+.applyp {
+    text-align: center;
+}
+
+.tutorialimg {
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    width: 90%;
+    margin: auto;
+    border-radius: 20px;
+    background-clip: content-box;
+    padding: .5em;
+    background-color: var(--lightShade);
+    box-shadow: 0 3px 3px 0 rgba(0, 0, 0, 0.14), 0 4px 2px -3px rgba(0, 0, 0, 0.2), 0 2px 6px 0 rgba(0, 0, 0, 0.12);
+}
+
+.sectionstart {
+    text-align: left;
+    margin-top: 0;
+}
+
+.createtutorial {
+    background-color: var(--mainColor);
+    color: var(--lightShade);
+}
+
+.createimg {
+    background-image: url('./create500.PNG');
+    height: 450px;
+}
+
+.exploretutorial, .applytutorial {
+    background-color: var(--lightShade);
+    color: var(--darkShade);
+}
+
+.exploreimg {
+    background-image: url('./explore500.PNG');
+    height: 200px;
+}
+
+.locktutorial {
+    background-color: var(--darkShade);
+    color: var(--lightShade);
+}
+
+.selectedimg {
+    background-color: var(--lightShade);
+    background-image: url('./selected500.PNG');
+    height: 200px;
+}
+
+.applytutorial {
+    margin-bottom: 5em;
+}
+
+.applyimg {
+    background-image: url('./apply1.PNG');
+    padding: 0;
+    height: 150px;
+    margin-bottom: 2em;
+    width: 75%;
+}
+
+@media (min-width: 900px) {
+    .tutorialimg {
+        width: 75%;
+    }
+
+    .createimg {
+        background-image: url('./create900.PNG');
+    }
+
+    .exploreimg {
+        background-image: url('./explore900.PNG');
+        height: 300px;
+    }
+
+    .selectedimg {
+        background-image: url('./selected900.PNG');
+    }
+
+    .applyimg {
+        background-image: url('./apply1.PNG');
+        height: 150px;
+        width: 350px;
+        margin-top: 4em;
+    }
+}
+
+@media (min-width: 1200px) {
+    .tutorialimg {
+        width: 900px;
+    }
+
+    .frontp {
+        font-size: 1.7em;
+    }
+
+    .createimg {
+        background-image: url('./create1200.PNG');
+        height: 500px;
+    }
+
+    .exploreimg {
+        background-image: url('./explore1200.PNG');
+        height: 500px;
+    }
+
+    .selectedimg {
+        background-image: url('./selected1200.PNG');
+    }
+
+    .applyimg {
+        width: 350px;
+    }
+}
