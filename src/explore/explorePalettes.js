@@ -1,44 +1,45 @@
 import React, { Component } from 'react';
+import { useSelector, useDispatch} from 'react-redux';
+import {handleResetLock} from '../redux/exploreActions'
+import {handleSelectPalette} from '../redux/navActions'
 
-export class CardContainer extends Component {
-    render() {
-        let paletteCards = this.props.propList.filteredData.map(x => <PaletteCard palette={x} handleSelectPalette={this.props.propList.handleClick} 
-            handleResetLock={this.props.propList.handleResetLock}/>)
 
-        return (
-            <section id="cardcontainer">
-                {paletteCards}
-            </section>
-        );
-    }
+export const CardContainer = () => {
+    let paletteCards = useSelector(state => state.explore.filteredPalettes).map(x => <PaletteCard palette={x}/>)
+    return(
+        <section id='cardcontainer'>
+            {paletteCards}
+        </section>
+    );
+
 }
 
-class PaletteCard extends Component {
-    handleClick = () => {
-        let colors = [this.props.palette.light_shade, this.props.palette.light_accent, this.props.palette.main, 
-            this.props.palette.dark_accent, this.props.palette.dark_shade];
-        this.props.handleResetLock();
-        this.props.handleSelectPalette(colors);
+function PaletteCard({palette}) {
+    let dispatch = useDispatch();
+    function handleClick() {
+        let colors = [palette.light_shade, palette.light_accent, palette.main, 
+            palette.dark_accent, palette.dark_shade];
+        dispatch(handleResetLock);
+        dispatch(handleSelectPalette(colors))
     }
 
-    render() {
-        let colors = [this.props.palette.light_shade, this.props.palette.light_accent, this.props.palette.main, 
-            this.props.palette.dark_accent, this.props.palette.dark_shade];
-        
-        colors = colors.map(x => <PaletteCardColor color={x} />);
+    let colorsOnThisPallete = [palette.light_shade, palette.light_accent, palette.main, 
+        palette.dark_accent, palette.dark_shade];
+    colorsOnThisPallete = colorsOnThisPallete.map(x => <PaletteCardColor color={x}/>)
 
-        return (
-            <div className="palette" aria-label="color palette" onClick={this.handleClick}>
-                <div className="setinfo">
-                    <p className="author">{'Created by ' + this.props.palette.username}</p>
-                    <div className="colorcontainer">
-                        {colors}
-                    </div>
-                </div>
+    return (
+        <div className="palette" aria-label="color palette" onClick={handleClick}>
+        <div className="setinfo">
+            <p className="author">{'Created by ' + palette.username}</p>
+            <div className="colorcontainer">
+                {colorsOnThisPallete}
             </div>
-        );
-    }
+        </div>
+    </div>
+    )
 }
+ 
+
 
 class PaletteCardColor extends Component {
     render() {
@@ -49,6 +50,16 @@ class PaletteCardColor extends Component {
     }
 }
 
+export const NumberOfResult = () => {
+    let nResult = useSelector(state => state.explore.nFiltered)
+    return (
+        <p id="nPalettes" aria-label="number of search results" aria-live="polite">
+        {nResult + ' results found'}
+        </p>
+    )
+}
+
+/*
 export class NumberOfResult extends Component {
     render() {
         return (
@@ -57,4 +68,4 @@ export class NumberOfResult extends Component {
             </p>
         );
     }
-}
+}*/
